@@ -10,6 +10,21 @@
     <script type="text/javascript" charset="utf-8">
       	mui.init();
     </script>
+    <style>
+		.mui-input-row .mui-input-clear~.mui-icon-clear,
+		.mui-input-row .mui-input-password~.mui-icon-eye,
+		.mui-input-row .mui-input-speech~.mui-icon-speech {
+			font-size: 20px;
+			position: absolute;
+			z-index: 1;
+			top: 10px;
+			right: 10px;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			color: #999
+		}
+    </style>
 </head>
 <body>
 <div class="mui-content">
@@ -46,7 +61,7 @@
 						<label>证件号码</label>
 						<input type="text" class="mui-input-clear" id="card_id" name="card_id" placeholder="请输入身份证证件号码">
 					</div>
-					<div class="mui-input-row">
+					<!--<div class="mui-input-row">
 						<label>身份证正面</label>
 						<span id="span_card_pic1"></span>
 						<input type="hidden" id="card_pic1" name="card_pic1" readonly="readonly" style="width: 25%;" value="" />
@@ -62,7 +77,7 @@
 							上传
 						</button>
 						
-					</div>
+					</div>-->
 
 					<div class="mui-button-row">
 						<button type="button" id="btn_submit" class="mui-btn mui-btn-primary" onclick="return false;">确认</button>&nbsp;&nbsp;
@@ -80,9 +95,10 @@ function formck(){
 	var frm = document.forms['formx'];
 	var realname = frm.elements['realname'].value;
 	var card_id = frm.elements['card_id'].value;
-	 var card_pic1 = frm.elements['card_pic1'].value;
-	 var card_pic2 = frm.elements['card_pic2'].value;
+	 /*var card_pic1 = frm.elements['card_pic1'].value;
+	 var card_pic2 = frm.elements['card_pic2'].value;*/
 	var errorMsg = '';
+	
 	if (realname.length == 0 ) {
 		errorMsg += '* 真实姓名不能为空' + '\n';
 	}
@@ -95,9 +111,9 @@ function formck(){
 		}
 	}
 	
-	if (card_pic1.length == 0 ) {
+	//if (card_pic1.length == 0 ) {
 //		errorMsg += '* 请上传身份证正面照片' + '\n';
-	}
+	//}
  
 	if (errorMsg.length > 0){
 		plus.nativeUI.alert(errorMsg); return false;
@@ -130,7 +146,7 @@ mui.plusReady(function(){
 		var options = {};
 		options.data = {'user_id':user.uid(),'code':'approve','type':'realname'};
 		options.callback = function(res){
-			console.log(res);
+			//console.log(res);
 			var r = JSON.parse(res);
 			document.getElementById(relobj).value = r[0]['upfiles_id'];
 			document.getElementById('span_' + relobj).innerHTML = '图片上传成功';//r[0]['name']
@@ -139,30 +155,34 @@ mui.plusReady(function(){
 	})
 	
 	mui("body").on('tap', '#btn_submit', function(){
-		if(!formck()){
+		
+		/*user.realname(request,function(res){
+			//console.log(JSON.stringify(res));
+		})*/
+		/*if(!formck()){
 			return false;
-		}
+		}*/
 	var frm = document.forms['formx'];
 	var realname = frm.elements['realname'].value;
 	var card_id = frm.elements['card_id'].value;
-	var card_pic1 = frm.elements['card_pic1'].value;
-	var card_pic2 = frm.elements['card_pic2'].value;
-
+	/*var card_pic1 = frm.elements['card_pic1'].value;
+	var card_pic2 = frm.elements['card_pic2'].value;*/
+	
 	var sex = document.getElementById("sex2").checked ? '女' : '男';
 	
 		var request = {'user_id' : user.uid()};		
 		request.realname = realname;
 		request.card_id = card_id;
-		request.card_pic1 = card_pic1;
-		request.card_pic2 = card_pic2;
+		/*request.card_pic1 = card_pic1;
+		request.card_pic2 = card_pic2;*/
 		request.sex = sex;
 		plus.nativeUI.showWaiting();
-
+		//console.log(request.realname)
 		user.realname(request,function(res){
-			console.log(JSON.stringify(res));
+			//console.log(JSON.stringify(res));
 			if(res.status == 1){
 				//alert("实名认证成功,请等待审核");
-				plus.nativeUI.alert( "实名认证成功,请等待审核!", function(){
+				plus.nativeUI.alert( "实名认证成功!", function(){
 							mui.fire(plus.webview.currentWebview().opener(), "reload");
 							setTimeout(function(){
 								mui.back();

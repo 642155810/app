@@ -1,33 +1,52 @@
 ﻿var utoken, uid;
-var host = 'http://test.ifcar99.com/';
-var apiurl = 'http://test.ifcar99.com/api.php';
+//测试地址
+/*var host = 'http://test.ifcar99.com/';  
+var apiurl = 'http://test.ifcar99.com/api.php'; 
+var apiurl_new = 'http://apitest.ifcar99.com/';
 var api_upload_url = 'http://test.ifcar99.com/api.php?module=upload';
 var chargeapi_url = 'http://test.ifcar99.com/api/authllcz/llcz_charge_api.php';
-var queryapi_url = 'http://test.ifcar99.com/api/authllcz/llcz_query_api.php';
-//var host = 'http://192.168.1.10/';
+var queryapi_url = 'http://test.ifcar99.com/api/authllcz/llcz_query_api.php';*/
+//正式地址  
+ 
+var host = 'https://www.ifcar99.com/';  
+var apiurl = 'https://www.ifcar99.com/api.php'; 
+var apiurl_new = 'https://www.ifcar99.com/api_v2';
+var api_upload_url = 'https://www.ifcar99.com/api.php?module=upload';
+var chargeapi_url = 'https://www.ifcar99.com/api/authllcz/llcz_charge_api.php';
+var queryapi_url = 'https://www.ifcar99.com/api/authllcz/llcz_query_api.php'; 
 
-var appinfo = {};
-
-mui.plusReady(function() {
+//var host = 'https://192.168.1.10/';  
+mui.plusReady(function() { 
+	//获取登录客户端
+	auths=[];
+	plus.oauth.getServices(function(services){//认证成功回调
+		//auths = services;
+		for(var i in services){
+			var service = services[i]
+			if(service.id == 'weixin'){
+				auths.push(service)
+			}
+		}
+	},function(e){//错误回调
+	});
 	/*plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
 		//appid属性
 		appinfo.appid = wgtinfo.appid;
 		//version属性
 		appinfo.version = wgtinfo.version;
-		//name属性
-		appinfo.name = wgtinfo.name;
-	});*/
-if(document.getElementById("main-box")){
+		//name属性 
+		appinfo.name = wgtinfo.name; 
+	});*/  
+if(document.getElementById("main-box")){ 
 	mui('#main-box').on('tap', 'a[href]', function(){
 		var href = this.getAttribute('href');
-		if(/^(http\:\/\/|https\:\/\/)/.test(href)){
+		if(/^(http\:\/\/|http\:\/\/)/.test(href)){
 			plus.runtime.openURL(href);
 			return false;
 		}
 	})
 }
 });
-
 
 //保存数据
 function cache(key, val) {
@@ -60,9 +79,10 @@ var store = {
 
 	get: function(key) {
 		var obj = plus.storage;
-		var info = obj.getItem(key);
+		var info = obj.getItem(key);//单类模型获取对象方法（java）
 		var nowtime = new Date().getTime() / 1000;
 		var network = plus.networkinfo.getCurrentType();
+		//console.log(network)
 		if (!info) {
 			return null;
 		}
@@ -76,7 +96,7 @@ var store = {
 			this.delete(key);
 			return null;
 		}
-
+		
 		return info.val;
 	},
 	delete: function(key) {
@@ -151,10 +171,12 @@ var ajax = {
 			//url: url,
 			data: data,
 			dataType: 'json',
-			timeout: 30 * 1000,
+			timeout: 30*1000,
 			success: obj,
 			complete: function(xhr) {
 				endNetwork();
+				//serverTime = xhr.getResponseHeader("Date")
+				//console.log(serverTime)
 			},
 			error: function(e, type) {
 				endNetwork();
@@ -165,6 +187,9 @@ var ajax = {
 				if(type == 'parsererror'){
 					console.log(e.responseText);
 					//重试
+				}
+				if(type =='timeout'){//超时
+					plus.nativeUI.toast("请求超时，请检查网络!("+ type + ")");
 				}
 			}
 		})
@@ -180,8 +205,12 @@ var ajax = {
 			success: obj,
 			complete: function() {},
 			error: function(e, type) {
-				plus.nativeUI.toast("数据加载失败，请返回重试!(" + type + ")");
 				console.log('ajax 错误(' + type + '):' + url);
+				if(type =='timeout'){//超时 
+					plus.nativeUI.toast("请求超时，请检查网络!("+ type + ")");
+				}else{
+					plus.nativeUI.toast("数据加载失败，请返回重试!(" + type + ")");
+				}
 			}
 		})
 	}
@@ -221,6 +250,11 @@ var user = {
 		ajax.post(url, $data, callback);
 	},
 	//发送验证码
+	'yycode': function($data, callback) {
+		var url = apiurl + '?module=user&action=yycode';
+		ajax.post(url, $data, callback);
+	},
+	//发送验证码
 	'anjiemobilecode': function($data, callback) {
 		var url = apiurl + '?module=user&action=anjiemobilecode';
 		ajax.post(url, $data, callback);
@@ -255,7 +289,7 @@ var user = {
 	},
 	'logout': function($data, callback) {
 		var uid = this.uid();
-		var url = apiurl + '?module=user&action=logout';
+		var url = apiurl + '?module=user&action=logout';//获取登录客户端
 //		clientInfo = plus.push.getClientInfo();
 		ajax.post(url, {
 			uid: uid,
@@ -265,6 +299,28 @@ var user = {
 		user.deleteCache(uid); //清空缓存 
 		store.delete('uid');
 		store.delete('utoken');
+		store.delete('shoushi_status');
+		store.delete('shoushi_psw');   
+		store.delete('integral_notice'); //退出后删除签到提醒标识 
+		//store.delete('username'); 
+		var auth=auths[0]; 
+		if(auth){
+			var w=null;
+			if(plus.os.name=="Android"){
+				w=plus.nativeUI.showWaiting();
+			}
+			document.addEventListener("pause",function(){
+				setTimeout(function(){
+					w&&w.close();w=null;
+				},2000);
+			}, false );
+			auth.logout(function(e){
+				//alert('注销认证成功')
+			},function(){
+				//console.log('error'+e)
+			});
+		}
+		
 	},	
 	'getInfo': function(callback) {
 		var uid = this.uid();
@@ -331,6 +387,10 @@ var user = {
 		var url = apiurl + '?module=user&action=setpaypwd';
 		ajax.post(url, $data, callback);
 	},
+	"modifypaypwd" : function($data, callback){
+		var url = apiurl + '?module=user&action=modifypaypwd';
+		ajax.post(url, $data, callback);
+	},
 //	"loginbbs" : function($data, callback){
 //		var url = apiurl + '?module=user&action=loginbbs';
 //		ajax.post(url, $data, callback);
@@ -370,6 +430,32 @@ var user = {
 	"Deletellcz" : function($data, callback){
 		var url = apiurl + '?module=user&action=Deletellcz';
 		ajax.post(url, $data, callback);
+	},
+	"GetllczPrice" : function($data, callback){
+		var url = apiurl + '?module=user&action=GetllczPrice';
+		ajax.post(url, $data, callback);
+	},
+	//手势密码
+	"UpdateShoushi" : function($data, callback){
+		var url = apiurl + '?module=user&action=UpdateShoushi';
+		ajax.post(url, $data, callback);
+	},
+	"GetShoushi" : function($data, callback){
+		var url = apiurl + '?module=user&action=GetShoushi';
+		ajax.post(url, $data, callback);
+	},
+	"UpdateShoushiStatus" : function($data, callback){
+		var url = apiurl + '?module=user&action=UpdateShoushiStatus';
+		ajax.post(url, $data, callback);
+	},
+	'clear':function(){
+		store.delete('uid');
+		store.delete('utoken'); 
+		store.delete('shoushi_status');
+	    store.delete('shoushi_psw');
+	    store.delete('integral_notice');
+	    store.delete('adBox');
+	    plus.storage.removeItem('shoushimima');
 	}
 }
 
@@ -391,6 +477,10 @@ var account = {
 		var url = apiurl + '?module=account&action=cardbing';
 		ajax.post(url, $data, callback);
 	},
+	"cardbin" : function($data, callback){
+		var url = apiurl + '?module=account&action=cardbin';
+		ajax.post(url, $data, callback);
+	},
 	"cash_new" : function($data, callback){
 		var url = apiurl + '?module=account&action=cash_new';
 		ajax.post(url, $data, callback);
@@ -407,6 +497,16 @@ var account = {
 		var url = apiurl + '?module=account&action=Cost_llcz';
 		ajax.post(url, $data, callback);
 	},
+	//充值记录api
+	"GetRechargeList" : function($data, callback){
+		var url = apiurl + '?module=account&action=GetRechargeList';
+		ajax.post(url, $data, callback);
+	},
+	//提现记录
+	"GetCashList" : function($data, callback){
+		var url = apiurl + '?module=account&action=GetCashList';
+		ajax.post(url, $data, callback);
+	}
 }
 
 var borrow = {
@@ -434,6 +534,10 @@ var borrow = {
 		var url = apiurl + '?module=borrow&action=tender';
 		ajax.post(url, $data, callback);
 	},
+	"tenderAdd" : function($data, callback){
+		var url = apiurl_new + '/borrow/tender/add';
+		ajax.post(url, $data, callback);
+	},
 	"auto_add" : function($data, callback){
 		var url = apiurl + '?module=borrow&action=auto_add';
 		ajax.post(url, $data, callback);
@@ -456,10 +560,16 @@ var borrow = {
 	},
 	"AddAnJie" : function($data, callback){
 		var url = apiurl + '?module=borrow&action=AddAnJie';
+		ajax.post(url, $data, callback); 
+	},
+	"GetTenderLists" : function($data, callback){
+		var url = apiurl + '?module=borrow&action=GetTenderLists';
+		ajax.post(url, $data, callback);
+	},
+	"tender_bouns_recommend" : function($data, callback){
+		var url = apiurl_new + '/borrow/tender/bouns/recommend';
 		ajax.post(url, $data, callback);
 	}
-	
-
 }
 
 var product = {
@@ -535,10 +645,268 @@ var articles = {
 	"GetscrollpicList" : function($data, callback){
 		var url = apiurl + '?module=articles&action=GetscrollpicList';
 		ajax.post(url, $data, callback);
-	}	
+	},
+	"GetAdBox" : function($data, callback){
+		var url = apiurl + '?module=articles&action=GetAdBox';
+		ajax.post(url, $data, callback);
+	},
+	"GetNoticeStatus" : function($data, callback){
+		var url = apiurl + '?module=articles&action=GetNoticeStatus';
+		ajax.post(url, $data, callback);
+	},
+	"SetNoticeStatus" : function($data, callback){
+		var url = apiurl + '?module=articles&action=SetNoticeStatus';
+		ajax.post(url, $data, callback);
+	},
+	"ReadAllNotice" : function($data, callback){
+		var url = apiurl + '?module=articles&action=ReadAllNotice';
+		ajax.post(url, $data, callback);
+	}
 }
 
+var credit = {
+	"GetSign" : function($data, callback){
+		var url = apiurl + '?module=credit&action=Sign';
+		ajax.post(url, $data, callback);
+	},
+	"GetLogList" : function($data, callback){
+		var url = apiurl + '?module=credit&action=GetLogList';
+		ajax.post(url, $data, callback);
+	},
+	"GetTotal" : function($data, callback){
+		var url = apiurl + '?module=credit&action=GetTotal';
+		ajax.post(url, $data, callback);
+	},
+	"GetTypeCount" : function($data, callback){
+		var url = apiurl + '?module=credit&action=GetTypeCount';
+		ajax.post(url, $data, callback);
+	}
+}
+var closePhone = {
+	"GetPhoneChargeStatus" : function($data, callback){
+		var url = apiurl + '?module=account&action=PhoneChargeStatus';
+		ajax.post(url, $data, callback);
+	}
+}
 
+//使用新api
+var goods = {
+	"GetGoodsList" : function($data, callback){
+		var url = apiurl_new + '/goods/lists';
+		ajax.post(url, $data, callback);
+	},
+	"GetGoodsZoneList" : function($data, callback){
+		var url = apiurl_new + '/goods/zone/lists';
+		ajax.post(url, $data, callback);
+	},
+	"GetGoodsDetail" : function($data, callback){
+		var url = apiurl_new + '/goods/get';
+		ajax.post(url, $data, callback);
+	}
+}
+
+//用户
+var newUser = {
+	"login" : function($data, callback){
+		var url = apiurl_new + '/user/login';
+		ajax.get(url, $data, callback);
+	},
+	"get" : function($data, callback){
+		var url = apiurl_new + '/user/get';
+		ajax.post(url, $data, callback);
+	},
+	'setInfo':function(res){
+		store.set('uid', res.user.user_id, 3600 * 24 * 365);
+		store.set('utoken', res.token.token, 3600 * 24 * 365);
+		store.set('username', res.user.loginname, 3600 * 24 * 365);
+	},
+	'mobilecode':function($data, callback){
+		var url = apiurl_new + '/user/mobile_code';
+		ajax.post(url, $data, callback);
+	}
+}
+//地址
+var address={
+	"Getlists" : function($data, callback){
+		var url = apiurl_new + '/address/lists';
+		ajax.post(url, $data, callback);
+	},
+	"AddAddress": function($data, callback){
+		var url = apiurl_new + '/address/add';
+		ajax.post(url, $data, callback);
+	},
+	"DelAddress": function($data, callback){
+		var url = apiurl_new + '/address/delete';
+		ajax.post(url, $data, callback);
+	},
+	"UpdateAddress": function($data, callback){
+		var url = apiurl_new + '/address/update';
+		ajax.post(url, $data, callback);
+	}
+	
+}
+//新积分
+var newCredit = {
+	"GetLogList" : function($data, callback){
+		var url = apiurl_new + '/credit/log/lists';
+		ajax.post(url, $data, callback);
+	},
+	"CreditEnough" : function($data, callback){
+		var url = apiurl_new + '/credit/enough';
+		ajax.post(url, $data, callback);
+	},
+	"GetTotal" : function($data, callback){
+		var url = apiurl_new + '/credit/get';
+		ajax.post(url, $data, callback);
+	}
+}
+//兑换订单
+var order = {
+	"GetLogList" : function($data, callback){
+		var url = apiurl_new + '/order/lists';
+		ajax.post(url, $data, callback);
+	},
+	"Add" : function($data, callback){
+		var url = apiurl_new + '/order/add';
+		ajax.post(url, $data, callback);
+	},
+	"Get" : function($data, callback){
+		var url = apiurl_new + '/order/get';
+		ajax.post(url, $data, callback);
+	}
+}
+//加息劵
+var coupon = {
+	"GetCouponList" : function($data, callback){
+		var url = apiurl_new + '/coupon/user/lists';
+		ajax.post(url, $data, callback);
+	},
+	"Add" : function($data, callback){
+		var url = apiurl_new + '/coupon/add';
+		ajax.post(url, $data, callback);
+	},
+	"Send" : function($data, callback){
+		var url = apiurl_new + '/coupon/send';
+		ajax.post(url, $data, callback);
+	},
+	"GetUsedList" : function($data, callback){
+		var url = apiurl_new + '/coupon/user/use/lists'; 
+		ajax.post(url, $data, callback);
+	},
+	"AutoUse" : function($data, callback){
+		var url = apiurl_new + '/coupon/user/autouse'; 
+		ajax.post(url, $data, callback);
+	},
+	"AutoUseCancel" : function($data, callback){
+		var url = apiurl_new + '/coupon/user/autouse/cancel'; 
+		ajax.post(url, $data, callback);
+	}
+}
+//体验金
+var experience = {
+	"AccountGet" : function($data, callback){
+		var url = apiurl_new + '/experience/account/get';
+		ajax.post(url, $data, callback);
+	},
+	"Activate" : function($data, callback){
+		var url = apiurl_new + '/experience/user/activate';
+		ajax.post(url, $data, callback);
+	},
+	"AccountTransfer" : function($data, callback){
+		var url = apiurl_new + '/experience/account/transfer';
+		ajax.post(url, $data, callback);
+	},
+	"UserLists" : function($data, callback){
+		var url = apiurl_new + '/experience/user/lists';
+		ajax.post(url, $data, callback);
+	},
+	"LogLists" : function($data, callback){
+		var url = apiurl_new + '/experience/log/lists';
+		ajax.post(url, $data, callback);
+	}
+}
+
+//规则
+var article = {
+	"Get" : function($data, callback){
+		var url = apiurl_new + '/article/get';
+		ajax.post(url, $data, callback);
+	}
+}
+//微信
+var wx = {
+	'clear':function(){
+		
+	},
+	'setInfo':function(info){
+		store.set('wuid', info.unionid, 3600 * 24 * 365);
+		store.set('oid', info.openid, 3600 * 24 * 365);
+		store.set('nickname', info.nickname, 3600 * 24 * 365);
+		store.set('headurl', info.headimgurl, 3600 * 24 * 365);
+	},
+	'nickname': function() {
+		return store.get('nickname');
+	},
+	'oid': function() {
+		return store.get('oid');
+	},
+	'wuid': function() {
+		return store.get('wuid');
+	},
+	'headurl': function(uid) {
+		return store.get('headurl');
+	},
+	'judgeBind':function($data, callback){//判断有无绑定
+		var url = apiurl_new + '/wechat/mobile/oauth';
+		ajax.get(url, $data, callback);
+	},
+	'bindMobileCode':function($data, callback){//绑定验证码
+		var url = apiurl_new + '/user/bind_mobile_code';
+		ajax.get(url, $data, callback);
+	},
+	'bind':function($data, callback){//绑定已有账户
+		var url = apiurl_new + '/wechat/mobile_bind';
+		ajax.get(url, $data, callback);
+	},
+	'regBind':function($data, callback){//注册绑定
+		var url = apiurl_new + '/wechat/mobile_reg';
+		ajax.get(url, $data, callback);
+	},
+	'regMobileCode':function($data, callback){//注册绑定验证码
+		var url = apiurl_new + '/user/reg_mobile_code';
+		ajax.get(url, $data, callback);
+	}
+	
+}
+var uploader = {
+	'feedback':function($data, callback){//注册绑定验证码
+		var url = apiurl_new + '/feedback/add';
+		ajax.post(url, $data, callback);
+	}
+}
+var userbank = {
+	'delete':function($data, callback){//删除银行卡
+		var url = apiurl_new + '/userbank/delete'; 
+		ajax.post(url, $data, callback); 
+	},
+	'get':function($data, callback){//查看银行卡
+		var url = apiurl_new + '/userbank/get'; 
+		ajax.post(url, $data, callback); 
+	},
+	'modify':function($data, callback){//修改银行卡
+		var url = apiurl_new + '/userbank/modify'; 
+		ajax.post(url, $data, callback); 
+	},
+	'cancel_modify':function($data, callback){//修改银行卡
+		var url = apiurl_new + '/userbank/cancel_modify'; 
+		ajax.post(url, $data, callback); 
+	},
+	'modify_log_detail':function($data, callback){//修改银行卡
+		var url = apiurl_new + '/userbank/modify_log_detail'; 
+		ajax.post(url, $data, callback); 
+	}
+	
+}
 var system = {
 	'get': function(name) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -613,3 +981,35 @@ var system = {
 		return isjson;
 	}
 }
+var functionCom = {
+	checkToken : function(callback){
+		//判断异地登录
+	newUser.get({"token":user.utoken()},function(res){
+		//console.log("验证"+JSON.stringify(res))
+		if(res.error_no!=200){
+			var error_msg = res.error_msg
+			$("input").blur();
+			user.logout({},function(res){
+				//console.log('logout');
+				mui.confirm(error_msg,"提醒",["确定"],function(e) {
+					if (e.index == 0) {
+						//return false;
+						setTimeout(function(){
+							mui.fire(plus.webview.getLaunchWebview(),'gohome');
+						},500)
+						
+						login();
+						//mui.fire(plus.webview.getLaunchWebview(),'gohome');
+					}
+				})
+			});	
+		}else{
+		}
+		callback(res)
+	})//结束*/
+	}	
+}
+
+
+
+

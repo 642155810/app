@@ -7,147 +7,407 @@
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
     <link href="../css/css.css" rel="stylesheet" type="text/css" />
+    <link href="../css/iphone.css" rel="stylesheet" type="text/css" /> 
     <script type="text/javascript" charset="utf-8">
       	mui.init();
     </script>
+    <style>
+	    .Red-envelopes{
+	    	position: relative;
+	    	margin: 0;
+	    }
+	    .Red-envelopes li{
+	    	margin-top: 20px;
+	    }
+	    
+	    .wsy,.ysy,.ygq{
+	    	padding-left: 3%;
+	    	color: #443B3B;
+	    	line-height: 45px;
+	    	margin-bottom: -20px;
+	    }
+    	.hongbao-num,.hongbao-cond{
+    		margin:0 auto;
+    		width: 94%;
+    		height: 100px;
+    		background-color: #fffcf6;
+    		border-radius: 6px;
+    	}
+    	.hongbao-num img{
+    		display: block;
+    		width: 100%;
+    		height: auto;     
+    	}
+    	.hb-je{
+    		padding-right:20px;
+    		margin-top: 23px;
+    		/*width: 40%;*/
+    		float: left;
+    		line-height: 50px;
+    		font-size: 30px;
+    		padding-left: 15px;
+    	}
+    	.hongbao-num h5{
+    		width: 50%;
+    		margin-top: 20px;
+    		float: left;
+    		line-height: 30px;
+    		color: #3B3B3B;
+    		font-size: 18px;
+    	}
+    	.hongbao-num p{
+    		line-height: 20px;
+    		float: left;
+    		color: #b2b2b2;
+    		font-size: 12px;
+    	}
+    	.hongbao-cond{
+    		padding: 0 15px;
+    		margin-top: 2px;
+    		height: 35px;
+    		line-height: 35px;
+    		color: #6b6b6b;
+    	}
+    	.hongbao-cond span,{
+    		color: #6b6b6b;
+    	}
+    	.hongbao-cond a{
+    		color: #6b6b6b;
+    		float: right;
+    	}
+    	.mengban{
+    		position: absolute;
+    		width: 100%;
+    		height: 100%;
+    		background: rgba(255,255,255,0.6);
+    		border-radius: 6px;
+    	}
+    	.mui-bar-tab .mui-tab-item.mui-active.jxj-active{
+    		color:#df8800;
+    	}
+    	.nav-bar .mui-tab-item.jxj-active:after{
+    		background: #df8800;	
+    	}
+    	.mui-bar-tab .mui-tab-item.mui-active.hb-active{
+    		color:#DD524D;
+    	}
+    	.nav-bar .mui-tab-item.hb-active:after{
+    		background: #e4393c;	
+    	}
+    	.notes-moblie {
+		    background: url(../images/zwhb.png) no-repeat 0px 0px;
+		    display: block;
+		    width: 60px;
+		    height: 60px;
+		    background-size: 60px;
+		    margin: 0px auto;
+		    margin-top: 30px;
+		} 
+		.mui-control-content {
+    		position: inherit;
+    	}
+    	.coupon-type{
+    		position: absolute;
+    		font-size: 18px;
+    		top: 10px;
+    		right: 5%;
+    		color: #df8800;
+    	}
+    </style>
     
 </head>
 <body>
 	
-		<nav class="mui-bar-nav mui-bar-tab nav-bar" style="top:0px;">
-			<a class="mui-tab-item mui-active" href="#tabbar-unused">
-				<span class="mui-tab-label">未使用</span>
-			</a>
-			<a class="mui-tab-item" href="#tabbar-with-used">
-				<span class="mui-tab-label">已使用</span>
-			</a>
-			<a class="mui-tab-item" href="#tabbar-with-guoqi">
-				<span class="mui-tab-label">已过期</span>
-			</a>
-		</nav>
+	<nav class="mui-bar-nav mui-bar-tab nav-bar" style="top:0px;">
+		<a class="mui-tab-item mui-active jxj-active" href="#tabbar-with-coupon">
+			<span class="mui-tab-label">加息劵</span>
+		</a>
+		<a class="mui-tab-item hb-active" href="#tabbar-with-hongbao">
+			<span class="mui-tab-label">红包</span>
+		</a>
+	</nav>
 	<div class="mui-content">
-
-		<div id="tabbar-unused" class="mui-control-content mui-active">
+		
+		<div id="tabbar-with-coupon" class="mui-control-content mui-active">
+			<div class="notes-box" style="display:block;">
+				<i class="notes-moblie"></i>
+				<p class="no-records-size">暂无可用卡券</p>
+			</div>
+			<ul class="Red-envelopes" id="couponVip">	
+			</ul>
+			<ul class="Red-envelopes" id="couponList-1">	
+			</ul>
+			
+			<ul class="Red-envelopes" id="couponList-2">
+			</ul>
+			
+			<ul class="Red-envelopes" id="couponList-3">
+			</ul>
+		</div>
+		<div id="tabbar-with-hongbao" class="mui-control-content">
 			<ul class="Red-envelopes" id="hblist-1">
-			
 			</ul>
-
-
-<div class="Warm-tip clearfix">
-<i class="ico-tip icon"></i>
-<p class="title">红包使用规则：</p>
-<div>
-1. 每个红包都有不同的红包类型和使用有效期，红包只能用于投资抵扣，不能用来兑换和提现；<br />
-2. 红包金额小于20元时，红包金额不能大于投资金额的1%；<br />
-3. 红包金额大于等于20元时，红包金额不能大于投资金额的0.5%。
-</div>
-
-</div>
-
-
-		</div>
-		<div id="tabbar-with-used" class="mui-control-content">
 			<ul class="Red-envelopes" id="hblist-2">
-			
 			</ul>
-		</div>
-		<div id="tabbar-with-guoqi" class="mui-control-content">
 			<ul class="Red-envelopes" id="hblist-3">
-			
 			</ul>
 		</div>
 	</div>
 
 <script id="tpl-item-1" type="text/html">
+	<p class="wsy">未使用</p>
 	{{each list as $item i}}
-<li class="clearfix">
-	<div class="price">
-		<div class="number"><span class="small">&yen; </span>{{$item.money}}</div>
-		<img src="../images/Red-envelopes.png">
-	</div>
-	<div class="info">		
-		<p class="name">单笔投资满{{$item.tmoney}}元及以上可用</p>
-		<p class="date">还有<span class="hongb_q">{{$item.tday}}</span>过期</p>
-	</div>
-	<div class="bg"></div>
-</li>
+	<li>
+		<div class="hongbao-num" style="background: #fff5f5;">
+			<img src="../images/wsy_hb.png"/>
+			<div class="hb-je " style="color: #DD524D;">￥<span style="font-size: 50px;">{{$item.money}}</span></div>
+			<h5>还有{{$item.tday}}过期</h5>
+			<p>有效期至{{$item.endtime | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond" style="background: #fff5f5;">
+			<span class="hb-type">{{$item.whyadd}}</span>
+			<a>单笔投资满{{$item.tmoney}}元可用</a>
+		</div>
+	</li>
 	{{/each}}
-	{{if list.length == 0}}
-	<li class="clearfix"> 暂无红包记录 </li>
-	{{/if}}
 </script>
+
+<script id="tpl-item-1-1" type="text/html">
+	<p class="wsy">未使用</p>
+	{{each rows as $item i}}
+	{{if $item.type!='vip'}}
+	<li>
+		<div class="hongbao-num" style="position: relative;">
+			<img src="../images/wsy_jxj.png"/> 
+			<div class="hb-je " style="color: #df8800;"><span style="font-size: 50px;">{{$item.rate | toFixed2}}</span>%</div>
+			<h5>还有{{$item.expire_time | expireTime}}天过期</h5>
+			<p>有效期至{{$item.expire_time | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond">
+			<span class="hb-type">{{$item.remark}}</span>
+			{{if $item.limit_lower_money=="0"}}
+			<a>单笔投资满100元可用</a>
+			{{else}}
+			<a>单笔投资满{{$item.limit_lower_money}}元可用</a>
+			{{/if}}  
+		</div>
+	</li>
+	{{/if}}
+	{{/each}}
+</script>
+
+<script id="tpl-item-1-1-1" type="text/html">
+	{{each rows as $item i}}
+	{{if $item.type=='vip'}}
+	<li>
+		<div class="hongbao-num" style="position: relative;">
+			<div class="coupon-type">VIP</div>
+			<img src="../images/wsy_jxj.png"/> 
+			<div class="hb-je " style="color: #df8800;"><span style="font-size: 50px;">{{$item.rate | toFixed2}}</span>%</div>
+			<h5>还有{{1498838399 | expireTime}}天过期</h5>
+			<p>有效期至{{1498838399 | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond">
+			<span class="hb-type">{{$item.remark}}</span>
+			{{if $item.limit_lower_money=="0"}}
+			<a>单笔投资满100元可用</a>
+			{{else}}
+			<a>单笔投资满{{$item.limit_lower_money}}元可用</a>
+			{{/if}}  
+		</div>
+	</li>
+	{{/if}}
+	{{/each}}
+</script>
+
 <!-- 已使用  -->
 <script id="tpl-item-2" type="text/html">
+	<p class="ysy">已使用</p>
 	{{each list as $item i}}
-<li class="clearfix">
-	<div class="price">
-		<div class="number"><span class="small">&yen; </span>{{$item.money}}</div>
-		<img src="../images/Red-envelopes2.png">
-	</div>
-	<div class="info">		
-		<p class="date">领取时间 {{$item.addtime | dateFormat:"yyyy-MM-dd hh:mm"}}</p>
-		<p class="date">使用时间 {{$item.usetime | dateFormat:"yyyy-MM-dd hh:mm"}}</p>
-		<p class="name date">使用的标  <span class="yuan_x1" style="color: #555;"> {{$item.pname}}</span></p>
-	</div>
-	<div class="bg"></div>
-</li>
+	<li>
+		<div class="hongbao-num">
+			<img src="../images/ysy_hb.png"/>
+			<div class="hb-je " style="color:#727272;">￥<span style="font-size: 50px;">{{$item.money}}</span></div>
+			<h5>已使用</h5>
+			<p>使用时间：{{$item.usetime | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond">
+			<span class="hb-type">{{$item.whyadd}}</span>
+			<a>投资项目{{$item.pname}}</a>
+		</div>
+	</li>
 	{{/each}}
-	{{if list.length == 0}}
-	<li class="clearfix"> 暂无红包记录 </li>
-	{{/if}}
+</script>
+
+<script id="tpl-item-2-2" type="text/html">
+	<p class="ysy">已使用</p>
+	{{each rows as $item i}}
+	<li>
+		<div class="hongbao-num" style="position: relative;">
+			{{if $item.type=='vip'}}
+			<div class="coupon-type" style="color: #6b6b6b;">VIP</div>
+			{{/if}}
+			<img src="../images/ysy_hb.png"/>
+			<div class="hb-je " style="color:#727272;"><span style="font-size: 50px;">{{$item.rate | toFixed2}}</span>%</div>
+			<h5>已使用</h5>
+			<p>使用时间：{{$item.use_time | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond">
+			<span class="hb-type">{{$item.remark}}</span>
+			<a>投资项目{{$item.use_for_title}}</a> 
+		</div>
+	</li>
+	{{/each}}
 </script>
 
 <!-- 已过期  -->
 <script id="tpl-item-3" type="text/html">
+	<p class="ygq">已过期</p>
 	{{each list as $item i}}
-<li class="clearfix">
-	<div class="price">
-		<div class="number"><span class="small">&yen; </span>{{$item.money}}</div>
-		<img src="../images/Red-envelopes2.png">
-	</div>
-	<div class="info">
-		<p class="date">领取时间 {{$item.addtime | dateFormat:"yyyy-MM-dd hh:mm"}}</p>
-		<p class="date">过期时间 {{$item.endtime | dateFormat:"yyyy-MM-dd hh:mm"}}</p>
-	</div>
-	<div class="flag"><img src="../images/over-Expired.png"></div>
-	<div class="bg"></div>
-</li>
+	<li>
+		<div class="hongbao-num" style="position: relative;">
+			<div class="mengban"></div>
+			<img src="../images/ysy_hb.png"/>
+			<div class="hb-je " style="color:#727272;">￥<span style="font-size: 50px;">{{$item.money}}</span></div>
+			<h5>已过期</h5>
+			<p>过期时间：{{$item.endtime | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond" style="position: relative;">
+			<div class="mengban" style="width: 94%;"></div>
+			<span class="hb-type">{{$item.whyadd}}</span>
+			<a>单笔投资满{{$item.tmoney}}元可用</a>
+		</div>
+	</li>
 	{{/each}}
-	{{if list.length == 0}}
-	<li class="clearfix"> 暂无红包记录 </li>
-	{{/if}}
+</script>
+
+<script id="tpl-item-3-3" type="text/html">
+	<p class="ygq">已过期</p>
+	{{each rows as $item i}}
+	<li>
+		<div class="hongbao-num" style="position: relative;">
+			{{if $item.type=='vip'}}
+			<div class="coupon-type" style="color: #6b6b6b;">VIP</div>
+			{{/if}}
+			<div class="mengban"></div>
+			<img src="../images/ysy_hb.png"/>
+			<div class="hb-je " style="color:#727272;"><span style="font-size: 50px;">{{$item.rate | toFixed2}}</span>%</div>
+			<h5>已过期</h5>
+			<p>过期时间：{{$item.expire_time | dateFormat:"yyyy年MM月dd日"}}</p>
+		</div>
+		<div class="hongbao-cond" style="position: relative;">
+			<div class="mengban" style="width: 94%;"></div>
+			<span class="hb-type">{{$item.remark}}</span>
+			{{if $item.limit_lower_money=="0"}}
+			<a>单笔投资满100元可用</a>
+			{{else}}
+			<a>单笔投资满{{$item.limit_lower_money}}元可用</a>
+			{{/if}}
+		</div>
+	</li>
+	{{/each}}
 </script>
 
 
-
+		<script src="../js/jquery-1.11.2.min.js"></script>
 		<script src="../js/template.js"></script>
 		<script src="../js/template.function.js"></script>
 		<script src="../js/api.js"></script>
 		
 <script>
 
-mui.plusReady(function(){
-	request = {'user_id': user.uid()};
-	request.status = 1;
-	user.GetHongbao({'request':request},function(res){
-		var html = template('tpl-item-1',res);
-		document.getElementById("hblist-1").innerHTML = html;
-	});
+	mui.plusReady(function(){  
+		coupon.GetCouponList({"token":user.utoken(),"status":"1"},function(res){ 
+			if(res){
+				if(res.result.rows.length > 0){
+					var hasVip = false
+					var rows2=[]
+					var vipJson={}
+					for(var i in res.result.rows){
+						var row = res.result.rows[i]
+						if(row.type!='vip'){
+							rows2.push(row)
+						}else{
+							vipJson = row
+							hasVip = true
+						}
+					}
+					if(hasVip){
+						rows2.unshift(vipJson)
+					}
+					res.result.rows = rows2
+					$(".notes-box").css("display","none")
+					var html = template('tpl-item-1-1',res.result);
+					var html2 = template('tpl-item-1-1-1',res.result);
+					if(hasVip&&res.result.total==1){	
+					}else{
+						document.getElementById("couponList-1").innerHTML = html;
+					}
+					document.getElementById("couponVip").innerHTML = html2;
+				}
+			}
+		})
+		
+		//已使用
+		coupon.GetUsedList({"token":user.utoken(),'page':'1','size':'9999'},function(res){ 
+			//console.log(JSON.stringify(res)) 
+			if(res){
+				if(res.result.rows.length > 0){
+					$(".notes-box").css("display","none")
+					var html = template('tpl-item-2-2',res.result);
+					document.getElementById("couponList-2").innerHTML = html;
+				}
+			} 
+		})
+		//未使用 
+		coupon.GetCouponList({"token":user.utoken(),"status":"3"},function(res){   
+			//console.log(JSON.stringify(res))
+			if(res){
+				if(res.result.rows.length > 0){ 
+					$(".notes-box").css("display","none")
+					var html = template('tpl-item-3-3',res.result);
+					document.getElementById("couponList-3").innerHTML = html; 
+				}
+			}
+		})
+		//红包列表
+		request = {'user_id': user.uid()};
+		request.status = 1;
+		user.GetHongbao({'request':request},function(res){
+			if(res.list.length>0){
+				var html = template('tpl-item-1',res); 
+				document.getElementById("hblist-1").innerHTML = html;
+			}
+			
+		});
+		 
+		request = {'user_id': user.uid()};
+		request.status = 2;
+		user.GetHongbao({'request':request},function(res){
+			//console.log(JSON.stringify(res)) 
+			if(res.list.length > 0){
+				var html = template('tpl-item-2',res);
+				document.getElementById("hblist-2").innerHTML = html;
+			}
+		});
+		
+		request = {'user_id': user.uid()}; 
+		request.status = 3;
+		user.GetHongbao({'request':request},function(res){
+			
+			if(res.list.length > 0){
+				var html = template('tpl-item-3',res);
+				document.getElementById("hblist-3").innerHTML = html;
+			}
+		});
 	
-	request = {'user_id': user.uid()};
-	request.status = 2;
-	user.GetHongbao({'request':request},function(res){
-		var html = template('tpl-item-2',res);
-		document.getElementById("hblist-2").innerHTML = html;
-	});
-	
-	request = {'user_id': user.uid()};
-	request.status = 3;
-	user.GetHongbao({'request':request},function(res){
-		var html = template('tpl-item-3',res);
-		document.getElementById("hblist-3").innerHTML = html;
-	});
-})
+	})
+	document.addEventListener("top-right-btn",function(e){
+		var cardVouRule = plus.webview.create("card_voucher_rule.html","card_voucher_rule.html",{popGesture:"close"})
+		setTimeout(function(){
+			cardVouRule.show("slide-in-right")
+		},300)
+	})
 	
 
 </script>

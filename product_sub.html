@@ -9,8 +9,9 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		
 		<link rel="stylesheet" href="css/mui.min.css">
-		<link rel="stylesheet" href="css/invest.css">
-		
+		<link rel="stylesheet" href="css/invest.css">	
+		<style>
+		</style>
 	</head>
 
 	<body>
@@ -30,7 +31,7 @@
 
 		<script src="js/jquery-1.11.2.min.js"></script>
 		<script src="js/common.js"></script>
-		<script src="js/mui.min.js"></script>
+		<script src="js/mui.min2.js"></script>
 		<script src="js/template.js"></script>
 		<script src="js/template.function.js"></script>
 		<script src="js/api.js"></script>
@@ -56,12 +57,8 @@
 			function pulldownRefresh() {
 				count=1;
 				empty_flag = 0;
-				
 				setTimeout(function() {
 					var table = document.body.querySelector('.ui_item_cell');
-					//var cells = document.body.querySelectorAll('.mui-table-view-cell');
-					
-					//console.log(JSON.stringify(cells));
 					request = {'type_id': 6, 'order':'order_asc','epage':20,'page':1};
 					product.list({'request':request},function(res){
 						if(res){
@@ -82,7 +79,12 @@
 									}
 									
 									if(item.borrow_account_scale==100){
-										str2='<a href="javascript:;"  data-href="http://www.ifcar99.com/yidong/ancun/index.html" data-title="无忧存证"  class="img"><img src="images/wuy.jpg" class="wuy"></a>';
+										if(item.recordNo){
+											str2='<span href="javascript:;"  data-href="https://www.51cunzheng.com/webjsapi/downLoad?recordNo='+item.recordNo+'" data-href2="'+item.ancun_url+'" data-title="无忧存证"  class="img"><img src="images/wuy.jpg" class="wuy"></span>';
+										}
+										else{
+											str2='<span></span>';
+										}
 									}
 									else{
 										str2='可投金额 : <span class="invest-red">'+toThousands(parseInt(item.borrow_account_wait))+'元</span>';
@@ -157,7 +159,9 @@
 					var request = {'borrow_type':borrow_type,'page':count,'borrow_period':borrow_period,'dan':dan};
 					
 					product.list({'request':request},function(res){
+
 						if(res){
+							
 							for (var i = 0, len = i + 20; i < len; i++) {
 								var li = document.createElement('li');
 								li.className = 'li_item_cell';
@@ -174,7 +178,12 @@
 									}
 									
 									if(item.borrow_account_scale==100){
-											str2='<a href="javascript:;"  data-href="http://www.ifcar99.com/yidong/ancun/index.html" data-title="无忧存证"  class="img"><img src="images/wuy.jpg" class="wuy"></a>';
+										if(item.recordNo){
+											str2='<span href="javascript:;"  data-href="https://www.51cunzheng.com/webjsapi/downLoad?recordNo='+item.recordNo+'" data-href2="'+item.ancun_url+'" data-title="无忧存证"  class="img"><img src="images/wuy.jpg" class="wuy"></span>';
+										}
+										else{
+											str2='<span></span>';
+										}
 									}
 									else{
 										str2='可投金额 : <span class="invest-red">'+toThousands(parseInt(item.borrow_account_wait))+'元</span>';
@@ -188,10 +197,10 @@
 									}
 									else{
 										if(item.borrow_account_scale==100){
-											str3=
-											'<div class="invest-right-hkz">'+
-								   		         '<a href="javascript:;"  data-article_id="'+item.borrow_nid+'" data-id="'+item.id+'" data-has_repay="'+item.repay_account_yes+'" class="tap invest-hkz">还款中</a>'+
-								   			'</div>';
+										str3=
+										'<div class="invest-right-hkz">'+
+							   		         '<a href="javascript:;"  data-article_id="'+item.borrow_nid+'" data-id="'+item.id+'" data-has_repay="'+item.repay_account_yes+'" class="tap invest-hkz">还款中</a>'+
+							   			'</div>';
 										}
 										else{
 											str3=
@@ -239,38 +248,43 @@
 			
 			mui.plusReady(function() {
 				
-				
-				
-				
-				
 				setTimeout(function() {
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				}, 200);
-				
-				
+				document.addEventListener('initpage',function(e){ 
+					window.scroll(0,0) 
+					mui('#pullrefresh').pullRefresh().pulldownLoading();
+				},false);
 				var detailPage = null;
+				var checkTest = 0;
 				mui("#product-list").on('tap', 'a.tap', function(e){
 					e.stopPropagation();
+					if(checkTest == 1){
+						return false;
+					}else{
+						checkTest = 1;
+					}
 					var article_id = eval("(" + this.getAttribute('data-article_id') + ")");
 					var id = eval("(" + this.getAttribute('data-id') + ")");
 					var has_repay = eval("(" + this.getAttribute('data-has_repay') + ")");
-					
-					
 					//获得详情页面
 					
 					if(!detailPage){
 						if(has_repay){
 							var detailPage = mui.preload({url:'pshow_repay.html'});
 							setTimeout(function(){
-								detailPage.show("slide-in-right",100);
+								detailPage.show("pop-in",300);
 							},300);
 						}
 						else{
 							var detailPage = plus.webview.create('pshow.html');
-							plus.nativeUI.showWaiting();
+							detailPage.setStyle({
+								'popGesture': 'close'
+							})
+							//plus.nativeUI.showWaiting();
 							setTimeout(function(){
-								detailPage.show("slide-in-right",100);
-							},150);
+								detailPage.show("pop-in",300);
+							},300);
 							//触发详情页面的newsId事件
 							detailPage.addEventListener('loaded',function(){
 								mui.fire(detailPage,'productId',{
@@ -280,84 +294,59 @@
 								});
 							});
 							
-							
+							setTimeout(function(){
+								checkTest = 0;
+							},3000)
+
 						}
 						
 					}
 					
 						
 				})
+				
+				mui("#product-list").on('tap', 'span.img', function(e){
+					e.stopPropagation();
+					if(plus.os.name=='iOS'){
+						var href = this.getAttribute('data-href');
+						if(href && href.substr(0,1) != "#"){      
+							if(href == "") return;
+							var title = this.getAttribute('data-title');
+							//console.log(JSON.stringify(data))
+							//console.log(href)
+							//通知模板修改标题，并显示隐藏右上角图标；
+							inittemplate = getTemplate('template', 'template.html');
+								//获得共用父模板
+							var headerWebview = inittemplate.header;
+								//获得共用子webview
+							var contentWebview = inittemplate.content;
+							contentWebview.loadURL(href);
+							var right_btn = data.right_btn || ""; 
+							//console.log(data.title)
+							mui.fire(headerWebview, 'updateHeader', {
+								title: title,
+								showMenu: false,
+								right_btn:right_btn
+							});
+							
+							mui.fire(headerWebview, 'loading');
+							headerWebview.show('pop-in', 300);
+						}
+					}
+					else{
+						var href = this.getAttribute('data-href2');
+						//console.log(href)
+						plus.runtime.openURL(href);
+					}
+					
+					
+				})
 
 			});
 			
 			
 			
-			mui("#product-list").on('tap', 'a.img', function(e){
-					e.stopPropagation();
-					/*var article_id = eval("(" + this.getAttribute('data-article_id') + ")");
-					var id = eval("(" + this.getAttribute('data-id') + ")");
-					var has_repay = eval("(" + this.getAttribute('data-has_repay') + ")");*/
-					var href = this.getAttribute('data-href');
-					
-					//获得详情页面
-					//window.location.href=href;
-					if(href && href.substr(0,1) != "#"){      
-	    	
-	    		
-						if(href == "") return;
-						//var data = this.getAttribute('data');
-						var title = this.getAttribute('data-title');
-						//data = eval("(" + data + ")");
-						//console.log(JSON.stringify(data))
-						//console.log(href)
-						//通知模板修改标题，并显示隐藏右上角图标；
-						inittemplate = getTemplate('template', 'template.html');
-							//获得共用父模板
-						var headerWebview = inittemplate.header;
-							//获得共用子webview
-						var contentWebview = inittemplate.content;
-						contentWebview.loadURL(href);
-						var right_btn = data.right_btn || "";
-						//console.log(data.title)
-						mui.fire(headerWebview, 'updateHeader', {
-							title: title,
-							showMenu: false,
-							right_btn:right_btn
-						});
-						
-						mui.fire(headerWebview, 'loading');
-						headerWebview.show('slide-in-right', 150);
-						
-			      }
-					/*if(!detailPage){
-						if(has_repay){
-							var detailPage = mui.preload({url:'pshow_repay.html'});
-							setTimeout(function(){
-								detailPage.show("slide-in-right",100);
-							},300);
-						}
-						else{
-							var detailPage = plus.webview.create('pshow.html');
-							plus.nativeUI.showWaiting();
-							setTimeout(function(){
-								detailPage.show("slide-in-right",100);
-							},150);
-							//触发详情页面的newsId事件
-							detailPage.addEventListener('loaded',function(){
-								mui.fire(detailPage,'productId',{
-								article_id:article_id,
-								id:id,
-								has_repay:has_repay,
-								});
-							});
-							
-							
-						}
-						
-					}*/
-					
-						
-				})
+			
 			
 			
 		    

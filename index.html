@@ -1,330 +1,534 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<title>聚车金融</title>
-	
-    <script src="js/mui.min.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/jquery-1.11.2.min.js"></script>
-    <link href="css/mui.min.css" rel="stylesheet"/>
-    <link href="css/css.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" charset="utf-8">
-      	mui.init({
-         //statusBarBackground: '#ff1230',
-      	});
-    </script>
-    <style type="text/css">
-    	a.white:hover,a.white:visited { color: white; }
- 
-    	.header.mui-bar span.mui-icon.mui-icon-email-filled { font-size: 36px; padding: 5px 0px; margin: 0; }
-    	.ico19{width:20px;height:20px;display:block;}
-    	.ico-notice1{background-position: -130px -132px; width: 37px;height: 44px;}
-    	span.mui-icon.mui-icon-email-filled .mui-badge { top: 5px; }
-    	.mui-icon .mui-badge-yellow { color: #fff; background-color: #f0ad4e; }
-    	.mui-pull-right .ico-More{ background-position:-72px -30px; }
-    	.mui-pull-right .mui-icon-contact-filled { font-size: 30px; }
-    	
-    </style>
-</head>
-<body>
-<header class="mui-bar mui-bar-nav header">
-	<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left mui-hidden"></a>
-	<a class="mui-pull-right white" id="top-email"><span class="ico19 icon ico-notice1"><span class="badge mui-hidden"></span></span></a>
-	<a class="mui-pull-right white mui-hidden" id="top-contact"><span class="mui-icon"></span></a>
-	<!--<a class="mui-pull-right" style="padding-top: 10px;"><i class="ico-nav icon"></i></a>-->
-	<h1 class="mui-title name" id="title">聚车金融</h1>
-</header>
-
-
-<div class="clear"></div>
-<nav class="bot-nav">
-<a href="home.html" id="home" class="tab active" title="聚车金融"><i class="ico-Home icon"></i><p>首页</p></a>
-<a href="product.html" class="tab" title="理财"><i class="ico-Product icon"></i><p>理财</p></a>
-<a href="find.html" class="tab" title="发现"><i class="ico-Assets icon"></i><p>发现</p></a>
-<a href="user.html" class="tab" title="我的账户"><i class="ico-More icon"></i><p>我的</p></a>
-</nav>
-</body>
-<script>
-	mui.plusReady(function(){
-		if(!store.get('diffrent')){
-			var appinfo={};
-			plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
-				//appid属性
-				appinfo.appid = wgtinfo.appid;
-				//version属性
-				appinfo.version = wgtinfo.version;
-				//name属性
-				appinfo.name = wgtinfo.name;
-				
-				var request = {};
-				
-				product.getversion({"request":request},function(res){
-					
-					if(res){
-						if(appinfo.version<res.version){
-							var content='';
-							$.each(res.content, function(i, item) {
-								content+='\r\n'+item;
-							});
-							
-							store.set('diffrent', 1, res.time);	//标志暂存时间30秒
-							var btnArray = ['取    消', '立即更新'];
-							mui.confirm(content,res.title, btnArray, function(e) {
-								if (e.index == 1) {
-									/*if(plus.os.name='iOS'){
-										url = 'https://itunes.apple.com/cn/app/ju-che-jin-rong/id1074565293?mt=8';
-										plus.runtime.openURL(url);
-									}
-									else{
-										url = 'http://shouji.360tpcdn.com/160202/84ccd791bc8c0a7bc4261a68a15c502e/com.hzgxr.ifcar99_83.apk';
-										plus.runtime.openURL(url);
-									}*/
-									url='http://a.app.qq.com/o/simple.jsp?pkgname=com.hzgxr.ifcar99';
-									plus.runtime.openURL(url);
-									
-								} else {
-								}
-							})
-						}	
-					}
-					
-				})
-				
-			})
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>聚车金融</title>
+	    <script src="js/mui.min2.js"></script>
+	    <script src="js/common.js"></script>
+	    <script src="js/api.js"></script>
+	    <script src="js/jquery-1.11.2.min.js"></script>
+	    <script src="html5plus://ready"></script>
+	    <script>
+	    	if(window.plus){
+			    if(!plus.storage.getItem('welcome192')){	 
+					mui.openWindow({url:'guide.html', id:'guide',styles:{popGesture:'none'},show:{aniShow:'none'},waiting:{autoShow:false}});
+				} 
+			}
+	    </script>
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <link href="css/css.css" rel="stylesheet" type="text/css" />
+	    <link href="css/integral.css" rel="stylesheet" type="text/css" />
+	    <script type="text/javascript" charset="utf-8">
+	      	mui.init({
+	         //statusBarBackground: '#ff1230',
+	      	});
+	    </script>
+	    <style type="text/css">
+	    	a.white:hover,a.white:visited { 
+	    		color: white; 
+	    	}
+	    	.header.mui-bar span.mui-icon.mui-icon-email-filled {
+	    		font-size: 36px;
+	    		padding: 5px 0px; 
+	    		margin: 0; 
+	    	}
+	    	.ico19{
+	    		width:20px;
+	    		height:20px;
+	    		display:block;
+	    	}
+	    	.ico-notice1{
+	    		background-position: -130px -132px; 
+	    		width: 37px;
+	    		height: 44px;
+	    	}
+	    	span.mui-icon.mui-icon-email-filled .mui-badge {
+	    		top: 5px; 
+	    	}
+	    	.mui-icon .mui-badge-yellow { 
+	    		color: #fff; 
+	    		background-color: #f0ad4e; 
+	    	}
+	    	.mui-pull-right .ico-More{ 
+	    		background-position:-72px -30px;
+	    	}
+	    	.mui-pull-right .mui-icon-contact-filled { 
+	    		font-size: 30px;
+	    	}
+	    	#noticeNum{
+	    		top: 13px;
+	    		right: -23px;
+	    		border-radius: 100%;
+	    		position: relative;
+	    		display: block;
+		    	width: 8px;
+		    	height: 8px;
+	    		background-color:rgba(228,57,60,1) ;
+	    		color: #fff;
+	    	}
+	    	.ad-mengban {
+	    		position: fixed;
+	    		width: 100%;
+	    		height: 100%;
+	    		top: 0;
+	    		z-index: 9999;
+	    		bottom: 0;
+	    		background: rgba(00,00,00,0.6);
+	    		display: none;
+	    	}
+	    </style> 
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left mui-hidden"></a>
+			<a class="mui-pull-right white mui-hidden" id="top-email"><span class="ico19 icon ico-notice1"><span class="mui-hidden" id="noticeNum"></span></span></a>
+			<a class="mui-pull-right integral" id="top-contact" ><span class="icon integral-ico"></span>签到</a>
+			<!--<a class="mui-pull-right" style="padding-top: 10px;"><i class="ico-nav icon"></i></a>-->
+			<h1 class="mui-title name" id="title">聚车金融</h1>
+		</header>
+		<div class="clear"></div>
+		<div class="ad-mengban">
 			
-		}
-		/*else{
-			alert('时间未到')
-				
-		}*/
-
-		if(!plus.storage.getItem('welcome'))
-		{
-			mui.openWindow({url:'guide.html', id:'guide',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},waiting:{autoShow:false}});
-		}else{
-			plus.navigator.setFullscreen(false);
-		}
-		if(user.uid()){
-			//验证或设置手势密码
-			if(plus.storage.getItem('shoushimima')){
-            	mui.openWindow({url:'permissions.html', id:'yz',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
-            }else{
-            	//mui.openWindow({url:'permission.html', id:'yz',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
-            }
-//            mui('.mui-icon-contact')[0].classList.add('mui-hidden');
-	    }
-//		var home = mui.preload({
-//		      url:'home.html',
-//		      id:'home.html',
-//		      styles:{
-//		        top:'45px',
-//		        bottom:'50px'
-//		      }
-//		});
-//		home.show();
-
-			var subpages = ['home.html', 'product.html', 'find.html', 'user.html'];
-			var subpage_style = {top:'45px',bottom:'50px',scrollIndicator:'none'};//,render:'always'
-			var activeTab = subpages[0];
-				var self = plus.webview.currentWebview();
-				for (var i = 0; i < 4; i++) {
-					var temp = {};
-					var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);
-					if (i > 0) {
-						sub.hide();
-					}else{
-					}
-					self.append(sub);
+		</div>
+		<nav class="bot-nav">
+		<a href="home.html" id="home" class="tab active" title="聚车金融"><i class="ico-Home icon"></i><p>首页</p></a>
+		<a href="product.html" id="product" class="tab" title="理财"><i class="ico-Product icon"></i><p>理财</p></a>
+		<a href="find.html" class="tab" title="发现"><i class="ico-Assets icon"></i><p>发现</p></a>
+		<a href="user.html" id="user" class="tab" title="我的账户"><i class="ico-More icon"></i><p>我的</p></a>
+		</nav>
+	</body>
+	
+	<script>   
+		mui.plusReady(function(){
+			
+			if(!plus.storage.getItem('welcome192'))
+			{	 
+			}else{//已经显示导航了 
+				setTimeout(function(){
+					plus.navigator.closeSplashscreen(); 
+				},1000) 
+				//plus.navigator.setFullscreen(false);
+				if(!store.get('diffrent192')){
+					var appinfo={};
+					plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+						appinfo.appid = wgtinfo.appid;
+						appinfo.version = wgtinfo.version;
+						appinfo.name = wgtinfo.name; 
+						var request = {};
+						product.getversion({"request":request},function(res){
+							if(res){ 
+								if(appinfo.version<res.version){
+									var content='';
+									$.each(res.content, function(i, item) {
+										content+='\r\n'+item;
+									}); 
+									store.set('diffrent192', 1, 18000);	//标志暂存时间30秒
+									var btnArray = ['取    消', '立即更新'];
+									mui.confirm(content,res.title, btnArray, function(e) {
+										if (e.index == 1) {  
+											if(plus.os.name=='Android'){
+												createDownloadTask()
+											}else{
+												url='http://a.app.qq.com/o/simple.jsp?pkgname=com.hzgxr.ifcar99';
+												plus.runtime.openURL(url);
+											}
+										} else {
+										}
+									})
+								}
+							}
+							
+						})
+						
+					})
+					
 				}
-		//preload ()
-		mui(".bot-nav").on('tap','a',function(){
-			var url = this.getAttribute('href');
-			if(url == 'user.html'){
+			} 
+			/*****/
+			//bug：手势密码未输入完成界面会提醒签到
+			//修复思路：假如有手势密码。采用传自定义方法的方式，输入完正确手势密码在进行延时提醒
+			//无手势密码时，采用现有方式进行提醒 
+			/*****/
+			if(user.uid()){//判断手势密码是否开启	
+				if(store.get('shoushi_status')){
+	            	mui.openWindow({url:'permissions.html', id:'yz',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
+	           }else{
+	            	sign_notice() 
+	           } 
+		   }
+			/**********************************底部导航子页面webview实现****************************************/
+		    var	subpages = ['home.html', 'product.html', 'find.html', 'user.html'];  
+			subpage_style = {top:'45px',bottom:'50px',scrollIndicator:'none',bounce: 'vertical',bounceBackground:'#f8f8f8'};//,render:'always' 
+			var activeTab = subpages[0];
+			var self = plus.webview.currentWebview(); 
+			for (var i = 0; i < 4; i++) {  
+				var temp = {};
+				var sub = plus.webview.create(subpages[i], subpages[i], subpage_style);//遍历创建各页面的webview的id
+				if (i > 0) { 
+					sub.hide();//除了home.html外，其他webview都隐藏 
+				}else{
+					
+				}
+				self.append(sub);
+			}
+			document.addEventListener('sign_notice',function(){
+				sign_notice() 
+			})
+			document.addEventListener("turnUser",function(){
+				var $botNav=$(".bot-nav a")
+				$botNav.eq(3).tap()
+			})
+			document.addEventListener("turnVersion",function(){
+				if(!store.get('diffrent192')){
+					var appinfo={};
+					plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+						appinfo.appid = wgtinfo.appid;
+						appinfo.version = wgtinfo.version;
+						appinfo.name = wgtinfo.name;
+						var request = {};
+						product.getversion({"request":request},function(res){
+							if(res){
+								if(appinfo.version<res.version){
+									var content='';
+									$.each(res.content, function(i, item) {
+										content+='\r\n'+item;
+									});
+									store.set('diffrent192', 1, 18000);	//标志暂存时间30秒
+									var btnArray = ['取    消', '立即更新'];
+									mui.confirm(content,res.title, btnArray, function(e) {
+										if (e.index == 1) {
+											//安卓下载
+											if(plus.os.name=='Android'){
+												createDownloadTask()
+											}else{
+												url='http://a.app.qq.com/o/simple.jsp?pkgname=com.hzgxr.ifcar99';
+												plus.runtime.openURL(url);
+											}	
+										} else {
+										}
+									})
+								}else{
+									var content=
+										'1.微信绑定及登录\r\n'+
+										'2.自主更换银行卡\r\n'+
+										'3.消息通知优化\r\n'+
+										'4.帮助中心优化\r\n'+
+										'5.手势密码界面优化\r\n'+
+										'6.修复已知bug'
+									mui.alert(content,"新版本更新内容",'关闭',function(){
+										var homesub = plus.webview.getWebviewById("home.html"); 
+										mui.fire(homesub,'initpage2');
+										
+									})
+								}
+							} 
+							 
+						})
+						
+					})
+					
+				}
+			})
+			//preload () 
+			mui(".bot-nav").on('tap','a',function(){
+				//单点登录验证
+				if(user.utoken()){
+					//判断异地登录
+					functionCom.checkToken(function(res){
+						//console.log(res.error_no)
+						if(res.error_no==200){	
+						}
+					})	
+				}
+				var url = this.getAttribute('href');
+				if(url == 'user.html'){//如果打开了user页面，若没有登录信息，则调出login（）
+					if(!user.uid()){
+						login(); 
+						return false;
+					}
+				} 
+				document.getElementById("title").innerHTML = this.getAttribute('title');
+				var sub = plus.webview.getWebviewById(url); 
+				mui.fire(sub,'initpage');
+				active = document.querySelector('.bot-nav>.tab.active');
+				if(active && active.getAttribute('href') == url){
+					return false;//如果点击为当前页
+				}
+				if(active) active.classList.remove("active");
+				this.classList.add("active");
+				if(url == 'find.html'){
+					document.getElementById("top-contact").classList.add('mui-hidden');
+					document.getElementById("top-email").classList.add('mui-hidden');
+				}else if(url == 'user.html'){
+					document.getElementById("top-contact").classList.add('mui-hidden');//隐藏user页头部账号信息
+					document.getElementById("top-email").classList.remove('mui-hidden');
+					//首页消息未读
+					request={"user_id":user.uid()} 
+					articles.GetNoticeStatus({"request":request},function(res){
+						if(parseInt(res.count)>0){
+							document.getElementById("noticeNum").classList.remove('mui-hidden');
+						}else{
+							document.getElementById("noticeNum").classList.add('mui-hidden');
+						}
+						notice_id = res.notice
+					}) 
+				}
+				else if(url == 'product.html'){
+					document.getElementById("top-contact").classList.add('mui-hidden');
+					document.getElementById("top-email").classList.add('mui-hidden');
+				}
+				else{
+					document.getElementById("top-contact").classList.remove('mui-hidden');
+					document.getElementById("top-email").classList.add('mui-hidden'); 
+				}
+				sub.show(); 
+				//隐藏当前;
+				plus.webview.hide(activeTab);
+				//更改当前活跃的选项卡
+				activeTab = url;
+			});  
+			document.getElementById("top-contact").addEventListener('tap',function(){
 				if(!user.uid()){
 					login();
 					return false;
 				}
-			}
-			active = document.querySelector('.bot-nav>.tab.active');
-			if(active && active.getAttribute('href') == url){
-				return false;
-			}
-			if(active) active.classList.remove("active");
-			this.classList.add("active");
-			//plus.webview.currentWebview().hide();
-			document.getElementById("title").innerHTML = this.getAttribute('title');
+				var nowTime = new Date().getTime();
+    			var clickTime = $(this).attr("ctime");
+    			if( clickTime != 'undefined' && (nowTime - clickTime < 3000)){
+			        return false;
+			    }else{
+			    	$(this).attr("ctime",nowTime);
+			    }
+				var integralPage = plus.webview.create("integral.html","integral.html",{popGesture:"close"})
+				setTimeout(function(){
+					integralPage.show('pop-in', 300);  
+				},300)	 
+			},false);
 			
-			/*mui.openWindow({
-				id: url,
-				url: url,
-				styles: {},
-				waiting: {
-					autoShow: false
-				}
-			});*/
-				
-			var sub = plus.webview.getWebviewById(url);
-//			if(sub == null){
-//				//sub = mui.preload({'url':url,'id':url,'show':{'autoShow':false}, 'styles':{ top:'45px',bottom:'50px',width:'100%',hight:'100%','bounce':'none'}});
-//			}
-			mui.fire(sub,'initpage');
-			sub.show('slide-in-right');
-			if(url == 'find.html'){
-				document.getElementById("top-contact").classList.add('mui-hidden');
-				document.getElementById("top-email").classList.add('mui-hidden');
-			}else if(url == 'user.html'){
-				document.getElementById("top-contact").classList.remove('mui-hidden');
-				document.getElementById("top-email").classList.add('mui-hidden');
-			}
-			else if(url == 'product.html'){
-				document.getElementById("top-contact").classList.remove('mui-hidden');
-				document.getElementById("top-email").classList.add('mui-hidden');
-			}
-			else{
-				document.getElementById("top-contact").classList.add('mui-hidden');
-				document.getElementById("top-email").classList.remove('mui-hidden');
-			}
-		});
-		
-		if(store.get('topnotice') == null){
-			//mui-badge
-
-		}
-		
-		articles.getnewnotice({},function(res){
-			var noticetime = store.get(noticetime);
-//			console.log(JSON.stringify(res));
-			if(res.id > 0){
-				store.set('newnoticetime',res.addtime);
-				if(noticetime){
-					if(noticetime < res.addtime){
-						document.querySelector('.header .badge').classList.remove('mui-hidden');
-					}
-				}else{					
-					store.set('newnoticetime',res.addtime);
-					if(new Date().getDate() == new Date(res.addtime * 1000).getDate()){
-						document.querySelector('.header .badge').classList.remove('mui-hidden');
-					}
-				}
-			}
-		})
-		
-		document.getElementById("top-contact").addEventListener('tap',function(){
-				href = 'userinfo.html';
-				inittemplate = getTemplate('template', 'template.html');
-				var headerWebview = inittemplate.header;
-				var contentWebview = inittemplate.content;
-				contentWebview.loadURL(href);
-				mui.fire(headerWebview, 'updateHeader', {
-					title: '账号信息',
-					showMenu: false
-				});
-				mui.fire(headerWebview, 'loading');
-				headerWebview.show('slide-in-right', 100);
-		},false);
-		
-		//mui('.header .mui-icon-email')[0]
-		document.getElementById("top-email").addEventListener('tap',function(){
+			//mui('.header .mui-icon-email')[0]
+			document.getElementById("top-email").addEventListener('tap',function(){
 				var webview_style = {
 					popGesture: "close"
 				};
-				mui.openWindow({
-					id: 'notice.html',
-					url: 'notice.html',
-					styles: webview_style,
-					waiting: {
-						autoShow: false
-					}
-				});
-				//通知模板修改标题，并显示隐藏右上角图标；
-				//inittemplate = getTemplate('usertemplate', 'template.html');
-					//获得共用父模板
-				//var headerWebview = inittemplate.header;
-					//获得共用子webview
-				//var contentWebview = inittemplate.content;
-				//contentWebview.loadURL('notice.html');
-				/*mui.fire(headerWebview, 'updateHeader', {
-					title: "公告",
-					showMenu: false,
-					right_btn:''
-				});
-				mui.fire(headerWebview, 'loading');*/
-				/*headerWebview.show('slide-in-right', 150);
-				document.querySelector('.header .badge').classList.add('mui-hidden');
-				var newnoticetime = store.get('newnoticetime');
-				if(newnoticetime) store.set('noticetime',newnoticetime);*/
-		})
-		
-		setTimeout(function(){
-			//二级webview 
-			subWV = mui.preload({
-				id: 'subWV',
-				url: 'subtemplate.html'
-			});
-		},2000);
-		
-		
-		
-	});
-	
-			 //自定义事件，模拟点击“首页选项卡”
-			document.addEventListener('gohome', function() {
-				var defaultTab = document.getElementById("home");
-				//模拟首页点击
-				mui.trigger(defaultTab, 'tap');
-				//切换选项卡高亮
-				var current = document.querySelector(".bot-nav>.tab.active");
-				if (defaultTab !== current) {
-					current.classList.remove('active');
-					defaultTab.classList.add('active');
-				}
-			});
-	
-			 //首页返回键处理
-			 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
-			var first = null;
-			mui.back = function() {
-				//首次按键，提示‘再按一次退出应用’
-				if (!first) {
-					first = new Date().getTime();
-					mui.toast('再按一次退出应用');
-					setTimeout(function() {
-						first = null;
-					}, 1000);
-				} else {
-					if (new Date().getTime() - first < 1000) {
-						plus.runtime.quit();
-					}
-				}
-			};
-			
-			/*var wgtVer=null;
-			
-			function plusReady(){
-			    // ......
-			    // 获取本地应用资源版本号
-			    plus.runtime.getProperty(plus.runtime.appid,function(inf){
-			        wgtVer=inf.version;
-			        console.log("当前应用版本："+wgtVer);
-			    });
-			}
-			if(window.plus){
-			    plusReady();
-			}else{
-			    document.addEventListener('plusready',plusReady,false);
-			}*/
-			
+				var nowTime = new Date().getTime();
+    			var clickTime = $(this).attr("ctime");
+    			if( clickTime != 'undefined' && (nowTime - clickTime < 3000)){
+			        return false;
+			    }else{
+			    	$(this).attr("ctime",nowTime);
+			    }
+				var noticePage = plus.webview.create("notice.html","notice.html",{popGesture:'close'})
+				setTimeout(function(){
+					noticePage.show("pop-in",300)
+					plus.nativeUI.showWaiting()
+				},300)
+			})
+
 			document.addEventListener('permission',function(e){
-				mui.confirm('你要设置手势密码吗？', '提示', ['确定', '取消'], function(e) {
-					if (e.index === 0) {
-						mui.openWindow({url:'permission.html', id:'permission',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
-					}
-				});
+				user.GetShoushi({"request":{"user_id":user.uid()}},function(res){
+					//console.log(JSON.stringify(res))
+        			if(res.shoushi_status=="1"){
+        				store.set('shoushi_status', "1", 3600 * 24 * 365);
+        				store.set('shoushi_psw',res.shoushi, 3600 * 24 * 365);
+        				//console.log(store.get("shoushi_psw"))
+        				
+        			}else{
+        				mui.confirm('你要设置手势密码吗？', '提示', ['取消', '确认'], function(e) {
+							if (e.index === 1) {
+								mui.openWindow({url:'permission.html', id:'permission',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
+							}
+						});
+        			}
+            	})
 			},false);
-			
-			
-</script>
+		});//plusReady结束
+		 //检索消息未读
+		document.addEventListener('refresh', function() {
+			request={"user_id":user.uid()}
+			articles.GetNoticeStatus({"request":request},function(res){
+				if(parseInt(res.count)>0){
+					document.getElementById("noticeNum").classList.remove('mui-hidden');
+				}else{
+					document.getElementById("noticeNum").classList.add('mui-hidden');
+				}
+			})	
+		});
+		 //自定义事件，模拟点击“首页选项卡”
+		document.addEventListener('gohome', function() {
+			//console.log('home')
+			var defaultTab = document.getElementById("home");
+			//模拟首页点击
+			mui.trigger(defaultTab, 'tap');
+			//切换选项卡高亮
+			var current = document.querySelector(".bot-nav>.tab.active");
+			if (defaultTab !== current) {
+				current.classList.remove('active');
+				defaultTab.classList.add('active');
+			}
+		});
+		 //自定义事件，模拟点击“首页选项卡”
+		document.addEventListener('goproduct', function() {
+			//console.log('product')
+			var defaultTab = document.getElementById("product");
+			//模拟首页点击
+			mui.trigger(defaultTab, 'tap');
+			//切换选项卡高亮
+			var current = document.querySelector(".bot-nav>.tab.active");
+			if (defaultTab !== current) {
+				current.classList.remove('active');
+				defaultTab.classList.add('active');
+			}
+		});
+		
+		 //自定义事件，模拟点击“我的”
+		document.addEventListener('gouser', function() {
+			var defaultTab = document.getElementById("user");
+			//模拟user点击
+			mui.trigger(defaultTab, 'tap');
+			//切换选项卡高亮
+			var current = document.querySelector(".bot-nav>.tab.active");
+			if (defaultTab !== current) {
+				current.classList.remove('active');
+				defaultTab.classList.add('active');
+			}
+		});
+		 //自定义事件，模拟点击“我的”
+		document.addEventListener('gouser2', function() {
+			//mui.openWindow({url:"integral_mall.html"})
+			if(!user.uid()){
+				login();
+				return false;
+			}else{ 
+				template = getTemplate('usertemplate', 'template.html');
+				//获得共用父模板
+				var headerWebview = template.header;
+					//获得共用子webview
+				var contentWebview = template.content;
+				contentWebview.loadURL("integral_mall.html");
+				//var right_btn = data.right_btn || "";
+				mui.fire(headerWebview, 'updateHeader', {
+					title: "积分商城",
+					showMenu: false,
+					right_btn:"规则"
+				});
+				//判断异地登录
+				headerWebview.show('slide-in-right', 150);
+			}
+		});
+		document.addEventListener('closeMb',function(){  
+			$(".ad-mengban").css("display","none")   
+		})
+		document.addEventListener('openMb',function(){  
+			$(".ad-mengban").css("display","block")   
+		})
+		function sign_notice(){
+			if(!store.get('integral_notice')){     
+            	req2={'username': store.get('username'),
+				 'limit':1,
+				 'nid':'sign'
+				};
+				setTimeout(function(){
+					//undefine天数修复
+					if(user.uid()){//定时后加判断有无登录
+						credit.GetLogList({'request':req2},function(res,status,xhr){
+							store.set("integral_notice",1,20000)//一天一次
+							if(res==""){ 
+								mui.confirm("您已坚持"+0+"天了，可别忘记今天签到哦~","签到提醒\n",["取消","去签到"],function(e){
+									if(e.index == 1){
+										var integralPage = plus.webview.create("integral.html","integral.html",{popGesture:"close"})
+										integralPage.addEventListener('loaded',function(){
+											mui.fire(integralPage,'signauto')
+										})
+										
+										setTimeout(function(){
+											integralPage.show('pop-in', 300);  
+										},300) 	
+									}else{
+										return false;
+									}
+								})	 
+							}else{
+								var serverTime = (new Date(xhr.getResponseHeader('Date'))).getTime()+28800000
+							    var remainDate=serverTime-serverTime%86400000-28800000
+								if(parseInt(remainDate/1000)>parseInt(res[0].addtime)){
+									newCredit.GetTotal({'token':user.utoken()},function(res){
+										//console.log(JSON.stringify(res)) 
+						 			//	setTimeout(function(){
+											mui.confirm("您已坚持"+res.result.sign+"天了，可别忘记今天签到哦~","签到提醒\n",["取消","去签到"],function(e){
+												if(e.index == 1){
+													var integralPage = plus.webview.create("integral.html","integral.html",{popGesture:"close"})
+													integralPage.addEventListener('loaded',function(){
+														mui.fire(integralPage,'signauto')
+													})
+													
+													setTimeout(function(){
+														integralPage.show('pop-in', 300);  
+													},300) 	
+												}else{
+													return false;
+												}
+											})
+									//	},10000)   
+										
+									})
+								}
+							}
+	
+						}) 
+					}
+					
+				},10000)
+            }
+		}
+		//安卓升级包 
+		var dtask=null;
+		function createDownloadTask(){
+			if ( dtask ) {
+				return;
+			}
+		    var url = "https://www.ifcar99.com/download/app.apk"; 
+		    var options = {method:"GET",
+		       filename:"_doc/update/" 
+		    };
+		    plus.nativeUI.showWaiting("下载中...");
+			dtask = plus.downloader.createDownload( url, options,function(d,status){
+				if ( status == 200 ) { 
+		            console.log("下载成功："+d.filename);
+		            installApk(d.filename);
+		        } else {
+		            console.log("下载失败！");
+		            plus.nativeUI.toast("下载失败！");
+		        }
+		        plus.nativeUI.closeWaiting();
+			}).start();
+		}
+		function installApk(path){
+			plus.nativeUI.showWaiting("安装中...");
+		    plus.runtime.install(path,{},function(){
+		        plus.nativeUI.closeWaiting(); 
+		    },function(e){
+		        plus.nativeUI.closeWaiting();
+		        console.log("安装app失败["+e.code+"]："+e.message);
+		        plus.nativeUI.alert("安装app失败["+e.code+"]："+e.message);
+		    });
+		}
+		 //首页返回键处理
+		 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+		var first = null;
+		mui.back = function() {
+			//首次按键，提示‘再按一次退出应用’
+			if (!first) {
+				first = new Date().getTime();
+				mui.toast('再按一次退出应用');
+				setTimeout(function() {
+					first = null;
+				}, 1000);
+			} else {
+				if (new Date().getTime() - first < 1000) {
+					plus.runtime.quit();
+				}
+			}
+		};	
+	</script>
 </html>

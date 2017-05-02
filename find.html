@@ -15,6 +15,40 @@
  .ui_item_cell{margin-top: 15px;}
  .mar_ui{margin-top: -1px;}
  .click_dialog{display: block;    position: relative;}
+  .find-top{background: #fff; margin-top: -1px; }
+ .find-top li{ width: 33.333%;
+ 			  float: left; 
+ 			  display: block; 
+ 			  text-align: center; 
+ 			  padding:20px 0px;  
+ 			  }
+ 
+.find-top > li:before {
+    height: 0px;
+}		
+.ui_item_cell{
+	border:0px solid #fff;
+	position: relative;
+}	
+.ui_item_cell:before,.ui_item_cell:after{
+	position: absolute;
+	content:'';
+	background: #E5E5E5;
+	width: 100%;
+	height:1px;
+	left: 0;
+	transform: scaleY(.5);
+	-webkit-transform: scaleY(.5);
+	z-index: 999;
+	 
+} 
+.ui_item_cell:before{ 
+	top: 0;
+}
+.ui_item_cell:after{ 
+	bottom: 0!important;
+}	  
+
  </style>
 </head>
 
@@ -22,87 +56,89 @@
 
 
     <!--内容-->
-    	<div class="mui-scroll-wrapper">
-	<div class="mui-scroll">
+	<div class="mui-content">
     	<div class="ui_wrap_cell">
-       <ul class="ui_item_cell ui_cell_img ui_cell_arrow ui_cell_active mar_ui">
+       <ul class="ui_item_cell find-top">
 		   		<li>
-		   			<a href="notice.html" open-type="common" class="tap" data='{"title":"消息通知"}'>		
+		   			<a open-type="common" class="tap" data='{"title":"消息通知","href":"notice.html"}'>		
 		   				<span class="icon_news"></span>
-		   				消息通知					
+		   				<p>官方公告</p>					
+		   			</a>
+		   		</li>
+		  	    <li>
+		   			<a  class="tap" data='{"title":"精彩活动","href":"active.html"}'>
+		   				<span class="icon_activity"></span>
+		   				精彩活动
+		   			</a>
+		   		</li>
+		   		<li>
+		   			<a class="tap" open-type="common" data='{"title":"聚车商学院","href":"sxy_article.html"}'>		
+		   				<span class="icon_College"></span>
+		   				<p>聚车商学院</p>					
 		   			</a>
 		   		</li>
 		   	
 		    </ul> 
 		       <ul class="ui_item_cell ui_cell_img ui_cell_arrow ui_cell_active">
-		   		<li>
-		   			<a href="active.html" class="tap" data='{"title":"精彩活动"}'>
-		   				<span class="icon_activity"></span>
-		   				精彩活动
-		   			</a>
-		   		</li>
-		   		<li class="ui-jcts">
-		   			<a href="guide.html" class="tap">
-		   				<span class="icon_jcts"></span>
-		   				聚车特色
-		   			</a>
-		   		</li>
 		   			<li>
-		   			<a href="newbie.html" class="tap" data='{"title":"新手指南"}'>
+		   			<a class="tap" data='{"title":"新手指南","href":"newbie.html"}'>
 		   				<span class="icon_mall"></span>
 		   				新手指南
 		   			</a>
 		   		</li>
 		   			<li>
-		   			<a href="security.html" class="tap" data='{"title":"安全保障"}'>
+		   			<a class="tap" data='{"title":"安全保障","href":"https://www.ifcar99.com/yidong/y-insurance/index.html"}'>
 		   			   <span class="icon_forum"></span>
 		   				安全保障
-		   			</a>
+		   			</a> 
 		   		</li>
 		   	
 		    </ul> 
 		    
 		       <ul class="ui_item_cell ui_cell_img ui_cell_arrow ui_cell_active">
 		   		<li>
-		   			<a href="xszn.html" class="tap" data='{"title":"帮助中心"}'>
+		   			<a class="tap" data='{"title":"帮助中心","href":"xszn.html"}'>
 		   				 <span class="icon_help"></span>
 		   				帮助中心
 		   			</a>
 		   		</li>
 		   			<li>
-		   			<a href="javascript:void(0);" class="click_dialog" id="click_dialog">
+		   			<a href="javascript:void(0);" data='{"title":"关注微信公众号","href":"gzwx.html"}' class="click_dialog tap" >
 		   				 <span class="icon_follow"></span>
 		   				关注我们（微信公众号）
 		   			</a>		
 		   		</li>
 		   		
 		   		<li>
-		   			<a href="about.html" class="tap" data='{"title":"关于聚车金融"}'>
+		   			<a class="tap" data='{"title":"关于聚车金融","href":"about.html"}'>
 		   			   <span class="icon_about"></span>
 		   				关于聚车金融
 		   			</a>
 		   		</li>
-		   		<li id="bbh">
-		   			<a href="#">
-		   			   <span class="icon_bbh"></span>
+		   		<!--need to do-->
+		   		
+		   		<!--<li id="congzhi">
+		   			<button id="czinfo">充值</button>
+		   		</li>-->
+		    </ul>
+		    <ul class="ui_item_cell ui_cell_img ui_cell_arrow ">
+		    	<li id="bbh">
+		   			<a>
+		   			   <span class="icon_bbh"></span> 
 		   				当前版本
-		   				<span class="bbh-style">版本号 : 1.4.0</span>
+		   				<span class="bbh-style">版本号 : 1.9.2</span> 
 		   			</a>
 		   		</li>
-		    </ul> 
-		         <div class="ui_iphone" id='confirmBtn'><i class="ui_iphone_img"></i>服务热线：<button class="ui_iphone_font">4001-123-990</button><p>每日工作时间：9:00-17:00</p>
+		    	
+		    </ul>
+		    
+		         <div class="ui_iphone" id='confirmBtn'><i class="ui_iphone_img"></i>服务热线：<button class="ui_iphone_font">4001-123-990</button><p>每日工作时间：9:00-17:30</p>
 		         </div>
+		         <div style="height: 20px;"></div>
 		    </div>
-		   </div>
-		   </div>
-		   <script>		   	
-		   	mui('.mui-scroll-wrapper').scroll({
-            deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-});
-		   	</script>
-		   		
+		 </div>
 		   	
-	<script src="js/jquery-1.11.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery-1.11.2.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/api.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/template.js"></script>
@@ -110,82 +146,31 @@
 <script src="js/uploadimg.js"></script>
 
 <script>
-mui('.ui-jcts').on('tap', 'a.tap', function(e){
+	mui('.ui-jcts').on('tap', 'a.tap', function(e){
 		e.stopPropagation();
 		href = this.getAttribute('href');
-	    mui.openWindow({url:'guide.html', id:'guide',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},waiting:{autoShow:false}});
-	
-	
+	    mui.openWindow({url:'guide-show.html', id:'guide',styles:{popGesture:'none'},show:{autoShow:true,"aniShow":"pop-in","duration":300},waiting:{autoShow:false}});
+
 	})
-mui.plusReady(function(){
-			
-	document.getElementById("confirmBtn").addEventListener('tap', function() {
-				var btnArray = ['取消', '呼叫'];
-				mui.confirm(' ','4001-123-990', btnArray, function(e) {
-					if (e.index == 1) {
-						window.location.href = 'tel:4001-123-990';
-					} else {
-					}
-				})
-			});
-			
-	document.getElementById("click_dialog").addEventListener('tap', function() {
-				var btnArray = ['取消', '去关注'];
-				mui.confirm(' ','您可在微信-通讯录-添加朋友-查找公众号中搜索“聚车金融”，点击关注，可更方便的获取我们的最新信息。', btnArray, function(e) {
-					if (e.index == 1) {
-						window.location.href = 'weixin:WXSceneSession';
-					} else {
-					}
-				})
-			});			
-	
-		
-		preload ();
-		var inittemplate = getTemplate('template', 'template.html');
-		
-		mui('body').on('tap', '.imgbox', function(e){
-			e.stopPropagation();
-			var options = {};
-			options.data = {'user_id':user.uid(),'m':'user','action':'avatar','uid':user.uid(),'avatartype':'virtual'};
-			options.callback = function(res){
-				//console.log(res);
-				//res.fileurl
-				rs = JSON.parse(res);
-				if(rs.status == 1){					
-					document.getElementById("avatar").src = host + rs.filename + "?t=" + Math.random();
-				}else{
-					plus.nativeUI.alert(rs.msg);
+	mui.plusReady(function(){ 
+		document.getElementById("confirmBtn").addEventListener('tap', function() {
+			var btnArray = ['取消', '呼叫'];
+			mui.confirm(' ','4001-123-990', btnArray, function(e) {
+				if (e.index == 1) {
+					window.location.href = 'tel:4001-123-990';
+				} else {
 				}
-			}
-			uid = user.uid();
-			if(!uid){
-				document.getElementById("taps").href="";
-				login();
-				return;
-			}else{
-				getimg(options);
-			}
-			
-		})
-		mui("body").on('tap','a#taps',function(){
-			uid = user.uid();
-			if(!uid){
-				document.getElementById("taps").href="";
-				login();
-				return;
-			}else{
-				document.getElementById("taps").href="userinfo.html";
-			}
-		})
-	
-		
+			})
+			//openQQ()
+		});
+		var inittemplate = getTemplate('template', 'template.html');	
 		mui("body").on('tap','a.tap',function(){
-			
-			var id = this.getAttribute('href');
-			var href = this.href;
+			var data = this.getAttribute('data');
+			data = eval("(" + data + ")");
+			var id = data.href;
+			var href = data.href;
+			//console.log(href)
 			var type = this.getAttribute("open-type");
-			//console.log(type);
-			//console.log(22222222);
 			//不使用父子模板方案的页面
 			if (type == "common") {
 				var webview_style = {
@@ -193,17 +178,20 @@ mui.plusReady(function(){
 				};
 				mui.openWindow({
 					id: id,
-					url: this.href,
-					styles: webview_style,
+					url:href,
+					styles: webview_style, 
 					waiting: {
 						autoShow: false
-					}
+					},
+					show:{autoShow:true,"aniShow":"pop-in","duration":300}
 				});
+				var subnews = plus.webview.getWebviewById(id);
+				mui.fire(subnews,'initpage');
 			}
 			else{
-				var url = this.getAttribute('href');
-				href = this.href;
-				if(url == "") return;
+				/*var url = this.getAttribute('href');
+				href = this.href;*/
+				if(href == "") return;
 				var data = this.getAttribute('data');
 				data = eval("(" + data + ")");
 				//通知模板修改标题，并显示隐藏右上角图标；
@@ -220,75 +208,31 @@ mui.plusReady(function(){
 					right_btn:right_btn
 				});
 				mui.fire(headerWebview, 'loading');
-				headerWebview.show('slide-in-right', 150);
-			}
-				
+				headerWebview.show('pop-in', 300);
+			}		
 		})
-		
-		
-		mui('body').on('tap', '#logout', function(e){
-			e.stopPropagation();
-//			user.logout({},function(res){
-//				console.log('logout');
-				plus.nativeUI.toast('成功退出');
-				setTimeout(function(){
-					plus.runtime.quit(); 
-				},100);
-//			});
-		})
+		function openQQ() {
+            if (plus.os.name == "Android") {
+               var main = plus.android.runtimeMainActivity();
+               var Intent = plus.android.importClass('android.content.Intent');
+               var Uri = plus.android.importClass('android.net.Uri'); 
+               var intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin=2033360848"));
+               main.startActivity(intent); 
+            } 
+            if (plus.os.name == "iOS") {
+                plus.runtime.launchApplication({ 
+                    action: "mqq://im/chat?chat_type=wpa&uin=2033360848&version=1&src_type=web"
+                }, function(e) {
+                    plus.nativeUI.confirm("检查到您未安装qq，请先到appstore搜索下载？", function(i) {
+                        if (i.index == 0) {
+                            iosAppstore("itunes.apple.com/cn/app/mqq/");
+                        }
+                    });
+                });
+            }
+        }
 		
 	})		//plusReady结束
-	
-	document.addEventListener('initpage',function(e){
-					request = {};
-					request.user_id = user.uid();
-					
-	},false);
-
-	/*document.addEventListener('mui.view.refresh',function(){
-		user.getInfo(function(res){
-			var html = template('tpluser', res);
-			document.getElementById("user-bar").innerHTML = html;
-		});
-	},false);*/
-	function preload () {
-		mui.preload({
-			url:'notice.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-		mui.preload({
-			url:'active.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-		mui.preload({
-			url:'newbie.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-		mui.preload({
-			url:'security.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-		mui.preload({
-			url:'xszn.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-		mui.preload({
-			url:'about.html',
-			styles: {
-				popGesture: 'hide'
-			}
-		});
-	}
 </script>
 
 </body>

@@ -19,8 +19,9 @@
 		
 		<div class="mui-content"></div> 
 	</body>
-	<script src="js/mui.min.js"></script>
+	<script src="js/mui.min2.js"></script>
 	<script type="text/javascript">
+	
 		//启用双击监听
 		mui.init({
 			gestureConfig:{
@@ -32,6 +33,14 @@
 				styles:{}
 			}]
 		});
+		
+		mui.plusReady(function(){
+			document.addEventListener('initpage',function(e){
+				var sub = plus.webview.getWebviewById('product_sub.html');
+				mui.fire(sub,'initpage');
+			},false);
+		})
+		
 	
 		
 	</script>

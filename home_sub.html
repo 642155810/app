@@ -1,43 +1,149 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <link rel="stylesheet" href="css/mui.min.css">
-    <link href="css/css.css" rel="stylesheet" type="text/css" />
-    <link href="css/index.css" rel="stylesheet" type="text/css" />
-    <link href="css/swiper.min.css" rel="stylesheet" type="text/css" />
-	
-	<style>
-    .swiper-container {
-        width: 100%;
-        height:auto;
-    }
-    .swiper-slide {
-        text-align: center;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-    }
-	.swiper-slide img{ width:100%;}
-	.home-body{
-		zoom:1;
-		overflow: hidden;
-	}
-    </style>
-</head>
-<body>
-	<!--下拉刷新容器-->
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title></title>
+	    <link rel="stylesheet" href="css/mui.min.css">
+	    <link href="css/css.css" rel="stylesheet" type="text/css" />
+	    <link href="css/index.css" rel="stylesheet" type="text/css" />
+	    <link href="css/swiper.min.css" rel="stylesheet" type="text/css" />
+		<style>
+	    .swiper-container {
+	        width: 100%;
+	        height:auto;
+	    }
+	    .swiper-slide {
+	        text-align: center;
+	        display: -webkit-box;
+	        display: -ms-flexbox;
+	        display: -webkit-flex;
+	        display: flex;
+	        -webkit-box-pack: center;
+	        -ms-flex-pack: center;
+	        -webkit-justify-content: center;
+	        justify-content: center;
+	        -webkit-box-align: center;
+	        -ms-flex-align: center;
+	        -webkit-align-items: center;
+	        align-items: center;
+	    }
+		.swiper-slide img{ 
+			width:100%;
+		}
+		.home-body{
+			zoom:1;
+			overflow: hidden;
+		}
+		.black_overlay {
+			display: none;
+			position: absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			z-index: 1001;
+			background: black;
+			opacity: 0.45;
+			filter: Alpha(Opacity=50);
+		}
+		.rescan_main {
+			display: none;
+			position: absolute;
+			top: 10%;
+			left: 10%;
+			width: 88%;
+			height: 88%;		
+			z-index: 1002;
+			overflow: auto;	
+			padding: 0px;
+		}
+		.pf-close{ 
+			display: none;
+			width: 50px;
+			height: 50px;
+			position: absolute;
+			bottom: 5%;
+			left: 50%;
+			margin-left: -30px;
+			z-index: 1002;
+			cursor: pointer; 
+		}
+		.pf-close img{ 
+			width: 50px; 
+			height: 50px;
+		}
+		.home-more{
+			font-size: 14px;		
+		
+			}
+		.home-more-ico{	
+			background: url(images/icon.png) no-repeat -80px -46px;
+			display:inline-block;
+			width: 20px; height: 13px;
+			background-size:250px ;
+			position: relative;
+			top:2px; 	
+		}
+		.home-lcsj li{ float: left; font-size: 13px; width: 41%; }
+		.home-lcsj li:last-child { float: right;width: 18%; text-align: right;  }
+		.ad-mengban {
+    		position: fixed;
+    		width: 100%;
+    		height: 100%;
+    		top: 0;
+    		z-index: 9999;
+    		bottom: 0;
+    		background: rgba(00,00,00,0.6);
+    		display: none;
+    	}
+    	.ad-box{
+    		width: 70%;
+    		/*height: 400px;*/
+    		/*background: #fff;*/
+    		position: absolute;
+    		top: 50%;
+    		left: 50%;
+    		transform: translate(-50%,-50%);
+    		-webkit-transform: translate(-50%,-50%);
+    		border-radius: 6px;
+    		overflow: hidden;
+    	}
+    	.ad-box img{
+    		width: 100%;
+    		height: auto;
+    		display: block;
+    		border-radius: 6px;
+    	}
+		.close-mb {
+			color:rgba(255,255,255,0.7);
+			display: block;
+			margin: 0 auto;
+			font-size: 80px;
+			text-align: center;
+			line-height: 1.4;
+		}
+		
+		.mui-spinner:after{
+			/*display: block;
+		    width: 100%;
+		    height: 100%;
+		    content: '';
+		    background-image: url(images/logoh.png)!important;background-repeat: no-repeat; 
+		    background-position: 50%;
+		    background-size: 100%;*/
+			
+		}
+	    </style>
+	</head>
+	<body>
+		<div class="ad-mengban">
+			<div class="ad-box">
+				<img id="adTurn" data="" class="dsdsd" src=""/>
+				<span class="close-mb mui-icon mui-icon-closeempty"></span>
+			</div>
+		</div>
+		<!--下拉刷新容器-->
 		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
 				<!--数据列表-->
@@ -55,84 +161,94 @@
 					<div id="home-body" class="home-body">
 						
 					</div>
-					
-					
 				</div>
 				
 			</div>
 		</div>
-
-<div id="idx-box"></div>
-</body>
-
-<script id="tpl-borrow-item" type="text/html">
-	{{each list as item i}}
-	<div class="home-con">
-		<ul class="home-lcsj">
-			 <li><i class="home-icon"></i>累计投资 : <span class="home-peo">{{item.all_tou}}亿</span></li>  
-			 <li><i class="home-icona"></i>注册用户 : <span class="home-peo">{{item.all_users_num}}人</span></li> 
-		</ul>
-	</div>	
-	<div class="home-main">
-		<div>
-			<a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}"><h3 class="home-title">{{item.name}}</h3></a>
-			<span class="home-jctj">{{item.tip}}</span>
-			<div class="home-k-ico"></div>
-		</div>
-		<div class="home-clear"></div>
-		<a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}">
-		<div class="home-nhsy">		
-			年化收益 
-			<p>{{item.borrow_apr}}<i class="home-size">%</i></p>
-		</div>
-		<div class="home-xmqx">		
-			项目期限 
-			<p>{{item.borrow_period | month2day}}<i class="home-size">天</i></p>
-		</div>
-	  	<div class="home-l-ico"></div>
-	  	<div class="home-r-ico"></div>
-		<div class="home-jdt"></div>
-		<div class="home-hjdt" style="width:{{item.borrow_account_scale}}%;"></div>
 	
-		<div class="home-menoy">
-			<span class="home-xmze">项目总额  : {{item.account | toThousandsint}}元 </span>
-			<span class="home-ktje">可投金额 : <i class="home-peo">{{item.borrow_account_wait | toThousandsint}}</i>元</span>
+		<div id="idx-box"></div>
+		<div id="light2" class="rescan_main">
+			<a href="#" id="pone_c" data-href="">
+				<img id="adimg" src="images/pf-gg.png" style="width: 90%; height: 70%;">
+			</a>
 		</div>
-		</a>
-		<div class="home-clear"></div>	
-		{{if item.borrow_account_scale == '100'}}
-			<div class="home-botton-cc"><a href="#">已抢完</a></div>
-		{{else}}
-			<div class="home-botton"><a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}">立即抢购</a></div>
-		{{/if}}
+		<div class="pf-close" onClick="closeWindow('light2')">
+			<img src="images/pf-close.png">
+		</div>
+		<div id="fade" class="black_overlay"></div>
+	</body>
+
+
+	<script id="tpl-borrow-item" type="text/html">
+		{{each list as item i}}
+		<div class="home-con">
+			<ul class="home-lcsj" id='turnDate'>
+				<li>累计投资 : <span class="home-peo">{{item.all_tou}}亿</span></li>  
+				<li>注册用户 : <span class="home-peo">{{item.all_users_num}}人</span></li> 
+			    <li>更多 <span class="home-more-ico"></span></li>
+
+			</ul>
+		</div>	
+		<div class="home-main">
+			<div>
+				<a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}"><h3 class="home-title">{{item.name}}</h3></a>
+				<span class="home-jctj">{{item.tip}}</span>
+				<div class="home-k-ico"></div>
+			</div>
+			<div class="home-clear"></div>
+			<a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}">
+			<div class="home-nhsy">		
+				年化收益 
+				<p>{{item.borrow_apr}}<i class="home-size">%</i></p>
+			</div>
+			<div class="home-xmqx">		
+				项目期限 
+				<p>{{item.borrow_period | month2day}}<i class="home-size">天</i></p>
+			</div>
+		  	<div class="home-l-ico"></div>
+		  	<div class="home-r-ico"></div>
+			<div class="home-jdt"></div>
+			<div class="home-hjdt" style="width:{{item.borrow_account_scale}}%;"></div>
 		
-		  <div class="Secured">
-		    <ul>
-		      <li><span class="hbjh"></span>杭标计划</li> 
-		       <li class="xiant" style="width: 15px;">&nbsp;</li>
-		       <li><span class="ancun" ></span>安存无忧</li> 
-		    </ul>
-		 
-		   </div>
-	</div>
-	{{/each}}
-</script>
+			<div class="home-menoy">
+				<span class="home-xmze">项目总额  : {{item.account | toThousandsint}}元 </span>
+				<span class="home-ktje">可投金额 : <i class="home-peo">{{item.borrow_account_wait | toThousandsint}}</i>元</span>
+			</div>
+			</a>
+			<div class="home-clear"></div>	
+			{{if item.borrow_account_scale == '100'}}
+				<div class="home-botton-cc"><a href="#">已抢完</a></div>
+			{{else}}
+				<div class="home-botton"><a href="#" class="tap" data="{'article_id':{{item.borrow_nid}},'id':{{item.id}}}">立即抢购</a></div>
+			{{/if}}
+			
+			<div class="Secured">
+			    <ul>
+			      <li><span class="hbjh"></span>杭标计划</li> 
+			       <li class="xiant" style="width: 15px;">&nbsp;</li>
+			       <li><span class="ancun" ></span>安存无忧</li> 
+			    </ul>
+			 
+			</div>
+		</div>
+		{{/each}}
+	</script>
 
-<script id="tpl-pic-item" type="text/html">
-	{{each list as item i}}
-		<div class="swiper-slide"><a class="tap" href="{{item.url}}" data='{"url":"{{item.url}}","title":"{{item.name}}"}'><img src="{{host}}{{item.pic}}" onerror="this.src='images/1.png'" /></a></div>
-	{{/each}}
-</script>
-
-<script src="js/jquery-1.11.2.min.js"></script>
-<script src="js/common.js"></script>
-<script src="js/swiper.min.js"></script>
-<script src="js/mui.min.js"></script>
-<script src="js/template.js"></script>
-<script src="js/template.function.js"></script>
-<script src="js/api.js"></script>
-<script type="text/javascript" charset="utf-8">
-  	mui.init({
+	<script id="tpl-pic-item" type="text/html">
+		{{each list as item i}}
+			<div class="swiper-slide"><a class="tap" href="{{item.url}}" data='{"url":"{{item.url}}","title":"{{item.name}}","right_btn":"分享"}'><img src="{{host}}{{item.pic}}" onerror="this.src='images/1.png'" /></a></div>
+		{{/each}}
+	</script>
+	
+	<script src="js/jquery-1.11.2.min.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/swiper.min.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template.function.js"></script>
+	<script src="js/api.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	  	mui.init({
 			pullRefresh: {
 				container: '#pullrefresh',
 				down: {
@@ -142,18 +258,148 @@
 			}
 		});
 		
-	
-	
-	
-	/**
-	 * 下拉刷新具体业务实现
-	 */
-	function pulldownRefresh() {
-		
-		setTimeout(function() {
+	    //关闭广告
+		mui("body").on('tap','.close-mb',function(){
+			$(".ad-mengban").css("display","none")
+			var index = plus.webview.getLaunchWebview()
+			mui.fire(plus.webview.getLaunchWebview(),'closeMb') 
+		})
+		mui(".ad-box").on('tap','#adTurn',function(e){
+			e.stopPropagation();
+			var data = this.getAttribute('data');
+			console.log(data)
+			data = eval("(" + data + ")");
 			
+			if(!user.uid()){
+				var href = data.href2
+				var right_btn = "分享"; 
+				
+			}else{
+				var href = data.href  
+				var right_btn = data.right_title || "";
+			} 
+			if(data.title == ""){
+				mui.openWindow({
+					url:href,
+					id:href,
+					show:{
+					    aniShow:'pop-in'
+					    
+					}
+				})
+			}else{
+				//通知模板修改标题，并显示隐藏右上角图标；
+				inittemplate = getTemplate('template', 'template.html');
+					//获得共用父模板
+				var headerWebview = inittemplate.header;
+					//获得共用子webview
+				var contentWebview = inittemplate.content;
+				contentWebview.loadURL(href); 
+				mui.fire(headerWebview, 'updateHeader', { 
+					title: data.title,
+					showMenu: false,
+					right_btn:right_btn
+				});
+				
+				mui.fire(headerWebview, 'loading');
+				setTimeout(function(){
+					headerWebview.show('pop-in');
+				},300)	
+			}
+			
+			mui.trigger(document.querySelector('.close-mb'), 'tap');
+
+		})
+		/**  
+		 * 下拉刷新具体业务实现
+		 */
+		function pulldownRefresh() {
+			setTimeout(function() {
+				var request = {'borrow_type':'','epage':1,'totalinfo':1};
+				
+				product.getborrowlist({"request":request},function(res){
+					var total= new Array();
+					if(res){ 
+						res.newtime = new Date().getTime() / 1000;
+						var html = template('tpl-borrow-item',res);
+						document.getElementById("home-body").innerHTML = html;
+						request = {'type_id':6};
+						articles.GetscrollpicList({'request':request},function(res){
+							res.host = host;
+							var html = template('tpl-pic-item',res);
+							document.getElementById("swiper-wrapper").innerHTML = html;
+							turnData()
+							swiper.update(true)
+						})
+					}
+				});	
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh();//refresh completed
+			}, 400);
+			
+		}
+	  	//？？
+	  	mui.plusReady(function(){
+			//其他页面传来自定义函数执行下拉刷新
+			document.addEventListener('initpage',function(e){
+	  			//openWindow()
+	  			window.scroll(0,0)
+				mui('#pullrefresh').pullRefresh().pulldownLoading();	
+			},false);
+			//首页banner数据请求
+			request = {'type_id':6};
+			articles.GetscrollpicList({'request':request},function(res){
+				console.log(JSON.stringify(res))
+				res.host = host;
+				var html = template('tpl-pic-item',res);
+				document.getElementById("swiper-wrapper").innerHTML = html;
+			    swiper = new Swiper('.swiper-container', {
+			        pagination: '.swiper-pagination',
+			        paginationClickable: true,
+			        autoplay: 4000,
+			        autoplayDisableOnInteraction: false
+			    });    
+			})
+			//banner图掉级跳转，使用模板
+			mui('.swiper-wrapper').on('tap', 'a.tap', function(e){
+			    e.stopPropagation();
+			    href = this.getAttribute('href');
+			    if(href && href.substr(0,1) != "#"){  
+					if(href == "") return;
+					var data = this.getAttribute('data');
+					data = eval("(" + data + ")");
+					//通知模板修改标题，并显示隐藏右上角图标；
+					inittemplate = getTemplate('template', 'template.html');
+						//获得共用父模板
+					var headerWebview = inittemplate.header;
+						//获得共用子webview
+					var contentWebview = inittemplate.content;
+					contentWebview.loadURL(href);
+					var right_btn = data.right_btn || "";
+					mui.fire(headerWebview, 'updateHeader', {
+						title: data.title,
+						showMenu: false,
+						right_btn:right_btn
+					});
+					
+					mui.fire(headerWebview, 'loading');
+					setTimeout(function(){
+						headerWebview.show('pop-in', 300);
+					},300)	
+	            }
+	           //app2.0添加
+	         /*  var noticePage = plus.webview.create('notice_detail.html','notice_detail.html',{popGesture:"close"})
+	           noticePage.addEventListener("loaded",function(){
+	           		mui.fire(noticePage,"newsId",{
+						id:604 
+						}
+	           		)
+	           })
+	           plus.nativeUI.showWaiting()
+	           noticePage.show('pop-in',"300")*/
+		    })
+			
+			//数据主体请求
 			var request = {'borrow_type':'','epage':1,'totalinfo':1};
-		
 			product.getborrowlist({"request":request},function(res){
 				var total= new Array();
 				if(res){ 
@@ -161,120 +407,159 @@
 					var html = template('tpl-borrow-item',res);
 					document.getElementById("home-body").innerHTML = html;
 				}
+				turnData()
 			});
 			
-		
-			mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
-		}, 400);
-		
-	}
-  	
-  	mui.plusReady(function(){
-  		
-		
-		
-		request = {'type_id':6};
-		articles.GetscrollpicList({'request':request},function(res){
-			res.host = host;
-			var html = template('tpl-pic-item',res);
-			document.getElementById("swiper-wrapper").innerHTML = html;
-		    var swiper = new Swiper('.swiper-container', {
-		        pagination: '.swiper-pagination',
-		        paginationClickable: true,
-		        autoplay: 4000,
-		        autoplayDisableOnInteraction: false
-		    });
-		})
-		
-		mui('.swiper-wrapper').on('tap', 'a.tap', function(e){
-	    e.stopPropagation();
-	    href = this.getAttribute('href');
-	  if(href && href.substr(0,1) != "#"){      
-	    	
-	    		
-				if(href == "") return;
+			store.set("ad_sign",1,60)
+			//TODO 广告
+			if(store.get('adBox191')||!store.get('ad_sign')){ 
+	  			articles.GetAdBox({request:{}},function(res,status,xhr){ 
+					var serverTime = (new Date(xhr.getResponseHeader('Date'))).getTime()
+					if(res){ 
+						if(res.starttime*1000<serverTime&&res.endtime*1000>serverTime){
+							var index = plus.webview.getLaunchWebview()
+							if(!store.get('adImgUrl')||store.get('adImgUrl')!=res.imgurl){
+								store.set('adImgUrl',res.imgurl,315360000)//10年 
+								mui.fire(plus.webview.getLaunchWebview(),'openMb') 
+								$(".ad-mengban").css("display","block") 
+								$("#adTurn").attr("src",res.imgurl)
+								$("#adTurn").attr("data","{'title':'"+res.title+"','href2':'"+res.href2+"','href':'"+res.href+"','right_title':'"+res.share_title+"'}")
+							}else{
+								
+							}	
+						}else{ 
+							
+						}
+					}  
+				})
+	  		}
+			
+			
+			//跳转至投标详情页
+			var pshowshow = true;
+			mui("#home-body").on('tap','a.tap',function(e){
+				e.preventDefault();
+				if(pshowshow){
+					pshowshow = false;
+					setTimeout(function(){
+						pshowshow = true;
+					}, 1000);
+				}else{
+					return false;
+				}
 				var data = this.getAttribute('data');
 				data = eval("(" + data + ")");
 				//console.log(JSON.stringify(data))
-				//console.log(href)
-				//通知模板修改标题，并显示隐藏右上角图标；
-				inittemplate = getTemplate('template', 'template.html');
-					//获得共用父模板
-				var headerWebview = inittemplate.header;
-					//获得共用子webview
-				var contentWebview = inittemplate.content;
-				contentWebview.loadURL(href);
-				var right_btn = data.right_btn || "";
-				//console.log(data.title)
-				mui.fire(headerWebview, 'updateHeader', {
-					title: data.title,
-					showMenu: false,
-					right_btn:right_btn
+				var pshow = plus.webview.create('pshow.html','pshow-borrow',{'popGesture': 'close'});
+				pshow.addEventListener('loaded',function(){
+					mui.fire(pshow,"mui.view.show",data);
 				});
-				
-				mui.fire(headerWebview, 'loading');
-				headerWebview.show('slide-in-right', 150);
-				
-	      }
-	    })
-		
-		
-		var request = {'borrow_type':'','epage':1,'totalinfo':1};
-		
-		product.getborrowlist({"request":request},function(res){
-			var total= new Array();
-			if(res){ 
-				res.newtime = new Date().getTime() / 1000;
-				var html = template('tpl-borrow-item',res);
-				document.getElementById("home-body").innerHTML = html;
-			}
-		});
-		
-		var pshowshow = true;
-		mui("#home-body").on('tap','a.tap',function(e){
-			e.preventDefault();
-			if(pshowshow){
-				pshowshow = false;
 				setTimeout(function(){
-					pshowshow = true;
+					pshow.show("pop-in",300);
+				},300);
+			})
+			document.addEventListener('initpage2',function(e){
+	  			if(!store.get('adBox191')){
+		  			articles.GetAdBox({request:{}},function(res,status,xhr){
+						var serverTime = (new Date(xhr.getResponseHeader('Date'))).getTime()
+						if(res){ 
+							if(res.starttime*1000<serverTime&&res.endtime*1000>serverTime){
+								store.set("adBox191",1,315360000)//4小时 
+								store.set('adImgUrl',res.imgurl,315360000)
+								var index = plus.webview.getLaunchWebview()
+								mui.fire(plus.webview.getLaunchWebview(),'openMb') 
+								$(".ad-mengban").css("display","block") 
+								$("#adTurn").attr("src",res.imgurl)
+								$("#adTurn").attr("data","{'title':'"+res.title+"','href2':'"+res.href2+"','href':'"+res.href+"','right_title':'"+res.share_title+"'}")
+							}else{ 
+								
+							}
+						}  
+					})
+		  		}
+			},false);
+			
+			
+		})
+	  	function turnData(){
+	  		//跳转数据公示
+			mui("#turnDate").on('tap','li',function(e){
+				//console.log(JSON.stringify($(this)))
+				var nowTime = new Date().getTime();
+    			var clickTime = $(this).attr("ctime");
+    			if( clickTime != 'undefined' && (nowTime - clickTime < 3000)){
+			        return false;
+			    }else{
+			    	$(this).attr("ctime",nowTime);
+			    }
+				var data_public = plus.webview.create("data_public.html","dataPublic_sub.html",{popGesture:"close",hardwareAccelerated:true}) 
+				setTimeout(function(){
+					data_public.show("pop-in",300)
+				},400) 
+				setTimeout(function(){
+					checkTest = 0
+				},3000)
+			})
+	  	}
+	  	//首页返回键处理
+		 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+		var first = null;
+		mui.back = function() {
+			//首次按键，提示‘再按一次退出应用’
+			if (!first) {
+				first = new Date().getTime();
+				mui.toast('再按一次退出应用');
+				setTimeout(function() {
+					first = null;
 				}, 1000);
-			}else{
+			} else {
+				if (new Date().getTime() - first < 1000) {
+					plus.runtime.quit();
+				}
+			}
+		};
+	  	//？？
+  	/*	$('#pone_c').on('click',function(e){
+  			e.stopPropagation();
+  			var url = $(this).attr('data-href');
+			if(url!='#'){
+				if(!user.uid()){
+					login();
+					return false;
+				}
+				var webview_style = {
+					popGesture: "close"
+				};
+				mui.openWindow({
+					id: url,
+					url: url,
+					styles: webview_style,
+					waiting: {
+						autoShow: false
+					}
+				});
+				closeWindow('light2');
+			}
+			else{
 				return false;
 			}
-			var data = this.getAttribute('data');
-			data = eval("(" + data + ")");
-			//console.log(JSON.stringify(data))
-			var pshow = plus.webview.create('pshow.html','pshow-borrow');
-			pshow.addEventListener('loaded',function(){
-			mui.fire(pshow,"mui.view.show",data);
-			});
-			setTimeout(function(){
-				pshow.show("slide-in-right",100);
-			},300);
-		})
-		
-	})
-  	
-  	//首页返回键处理
-	 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
-	var first = null;
-	mui.back = function() {
-		//首次按键，提示‘再按一次退出应用’
-		if (!first) {
-			first = new Date().getTime();
-			mui.toast('再按一次退出应用');
-			setTimeout(function() {
-				first = null;
-			}, 1000);
-		} else {
-			if (new Date().getTime() - first < 1000) {
-				plus.runtime.quit();
-			}
+  		})*/
+	</script>
+	
+	<script language="javascript">
+		function openWindow() {
+			document.getElementById('light2').style.display = 'block';
+			$(".pf-close").css("display","block");
+			document.getElementById('fade').style.display = 'block';
 		}
-	};
-  	
-</script>
-
-
+		function closeWindow(id) {
+			document.getElementById(id).style.display = 'none';
+			document.getElementById('fade').style.display = 'none';
+			$(".pf-close").css("display","none"); 
+			$("rescan_main").css("display","none");
+	
+		}
+		
+	</script>
 
 </html>

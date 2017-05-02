@@ -7,168 +7,332 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="format-detection" content="telephone=no, email=no" />
 	<title>聚车金融</title>
-	<link rel="stylesheet" href="../css/mui.min.css">
-    <link href="../css/css.css" rel="stylesheet" type="text/css" />
-    <style>
-    	.hkjl-list { padding: 0 10px; ;}
-    	.mui-table h4{
-		        line-height: 25px;
-		        font-weight: 500;
-		}
-		.mui-table-view-cell:after {left: 0px;}
-    </style>
+	<link href="../css/mui.min.css" rel="stylesheet"/>     
+	<link href="../css/iphone.css" rel="stylesheet"/>
+	<style>
+		.item{
+	      position: relative;
+	    }
+	    .hkjl-dai{
+	      position: absolute;
+	      z-index:2;
+	      width: 18%;
+	      height:20px;
+	      font-size: 10px;
+	      line-height: 20px;
+	      top:13px;
+	      padding-left: 5px;
+	    }  
+	    header{
+	    	background: #fff;
+	    }
+	    .jx-text{
+	    	float: right;
+	    	
+	    }
+	</style>
 </head>
 <body>
-
-<div class="mui-content">
-	<!--下拉刷新容器-->
-	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-		<div class="mui-scroll">
-			<ul id="hkjl-list" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
-
-			</ul>
+<div class="mui-content"> 
+	<div class="dmb">
+		<div class="hkjl-name">
+				待满标0笔 <span>共计：<font class="hkjl-money">0.00</font>元</span>
 		</div>
+		<ul class="mui-table-view hkjl-cent">         
+		</ul>
 	</div>
-</div>
+	<div class="dhk">
+		<div class="hkjl-name">
+				待回款0笔 <span>共计：<font class="hkjl-money">0.00</font>元</span>
+		</div>
+		<ul class="mui-table-view hkjl-cent">
+			 
+	         
+		</ul>
+	</div>
+	
+	<div class="yhk">
+		<div class="hkjl-name">
+				已回款0笔<span>共计：0.00元</span>
+		</div>
+		<ul class="mui-table-view hkjl-cent">
+			 
+		</ul>
+	</div>
+</div>			
 
-<script id="tpl-item" type="text/html">
-	{{each list as item i}}
+<script src="../js/jquery-1.11.2.min.js"></script>
+<script src="../js/mui.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/template.function.js"></script>
+<script src="../js/api.js"></script>
 
-    <li class="mui-table-view-cell" borrow_nid="{{item.borrow_nid}}" has_repay="{{item.recover_recover_account_yes}}">
-        <div class="mui-table">
-            <div class="mui-table-cell mui-col-xs-9">
-                <h4 class="mui-ellipsis">{{item.borrow_name}}</h4>
-                <h5>应收时间: {{item.recover_time | dateFormat:'yyyy-MM-dd hh:mm'}}</h5>
-                <p class="mui-h6">                	
-                	应收本金: ￥{{item.recover_capital | toFixed}}
-                	应收利息: ￥{{item.recover_interest | toFixed}}
-                </p>
-            </div>
-            <div class="mui-table-cell mui-col-xs-3 mui-text-right">
-            	<p><!--应收总额:--> ￥{{item.all_recover | toFixed}}</p>
-                <span class="mui-h5">                	
-                	<!--{{if item.recover_web==1}}网站垫付{{/if}}-->
-                	{{if item.recover_status==1}}<font color="#666666">已还</font>{{else}}<font color="#FF0000">待收</font>{{/if}}
-                </span>
-            </div>
-        </div>
-    </li>
-
-	{{/each}}
-</script>
-
-		<script src="../js/mui.min.js"></script>
-		<script src="../js/template.js"></script>
-		<script src="../js/template.function.js"></script>
-		<script src="../js/api.js"></script>
-
-    <script type="text/javascript" charset="utf-8">
-    	var curr_page = 0;
-			mui.init({
-				pullRefresh: {
-					container: '#pullrefresh',
-					down: {
-						callback: pulldownRefresh
-					},
-					up: {
-						contentrefresh: '正在加载...',
-						contentnomore: '',
-						callback: pullupRefresh
+<script type="text/javascript" charset="utf-8">
+	
+	mui.init({
+		beforeback: function(){
+			//获得a界面的webview
+			var thisIndex= plus.webview.getWebviewById('user.html');
+			//var thisIndex= plus.webview.currentWebview().opener();
+//				//触发a的自定义事件（refresh）,从而进行数据刷新
+			mui.fire(thisIndex,'initpage');
+			//返回true，继续页面关闭逻辑
+			return true;
+		}
+	});
+		
+	mui.plusReady(function(){
+		request = {'type':'','user_id':user.uid(),'epage':10000};
+		borrow.GetTenderLists({'request':request},function(res){
+			//console.log(JSON.stringify(res)) 
+			dmbcount=0;
+			dmbsum=0.00;
+			dhkcount=0;
+			dhksum=0.00;
+			yhkcount=0;
+			yhksum=0.00;
+			$(res.list).each(function(i,e){
+				if(!e.recover_status){
+					dmbcount++;
+					if(e.coupon_user_use_id=="0"){
+						dmbsum=dmbsum+parseFloat(e.account_tender)+parseFloat(e.recover_interest);
+						recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest));
+						recover_interest = e.recover_interest
+						var jxText = ""
+					}else{
+						dmbsum=dmbsum+parseFloat(e.account_tender)+parseFloat(e.recover_interest+parseFloat(e.coupon_amount)/100);
+						recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100);
+						recover_interest = getFloatStr(parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100)
+						var jxText = "<span class='jx-text'>(+"+parseFloat(e.coupon_rate)/100+"%)</span>"
+					}
+					
+					if(e.recordNo){
+						str='<span class="hkjl-dai" href="https://www.51cunzheng.com/webjsapi/downLoad?recordNo='+e.recordNo+'" data-href2="'+e.ancun_url+'"><a class="hkjl-bqys" >已保全</a></span>'
+					}
+					else{
+						str=''; 
+					}
+					$('.dmb .mui-table-view').append(
+						'<li class="mui-table-view-cell item" borrow_nid="'+e.borrow_nid+'" has_repay="'+e.recover_status+'">'+
+						 	  e.borrow_name+
+						 	str+
+						 	'<span class="hkjl-right"><font class="hkjl-yc">待回款</font>'+recover+'<font class="hkjl-yuan">元</font>	</span>'+
+						 	'<p class="hkjl-tittle hkjl-martop"><i class="hkjl-tzsj"></i>投资时间：'+getTime(e.addtime,"yyyy-MM-dd hh:mm")+'<span>本金：'+e.account_tender+'元</span></p>'+
+						 	'<p class="hkjl-tittle"><span>收益：'+recover_interest+'元</span></p>'+ 
+						 '</li>'
+					)
+				}
+				else{
+					//console.log(JSON.stringify(e.recordNo))
+					if(e.repay_account_yes>0){//满标已回款
+						yhkcount++;
+						
+						
+						if(e.coupon_user_use_id=="0"){
+							yhksum=yhksum+parseFloat(e.account_tender)+parseFloat(e.recover_interest);
+							recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest));
+							recover_interest = e.recover_interest
+							var jxText = ""
+						}else{
+							yhksum=yhksum+parseFloat(e.account_tender)+parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100;
+							recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100);
+							recover_interest = getFloatStr(parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100)
+							var jxText = "<span class='jx-text'>(+"+parseFloat(e.coupon_rate)/100+"%)</span>"
+						}
+						if(e.recordNo){
+							str='<span class="hkjl-dai" href="https://www.51cunzheng.com/webjsapi/downLoad?recordNo='+e.recordNo+'" data-href2="'+e.ancun_url+'"><a class="hkjl-bqys" >已保全</a></span>'
+						}
+						else{
+							str='';
+						}
+						$('.yhk .mui-table-view').append(
+							'<li class="mui-table-view-cell item" borrow_nid="'+e.borrow_nid+'" has_repay="'+e.recover_status+'">'+
+							 	  e.borrow_name+
+							 	str+
+							 	'<span class="hkjl-right"><font class="hkjl-yc">已回款</font>'+recover+'<font class="hkjl-yuan">元</font>	</span>'+
+							 	'<p class="hkjl-tittle hkjl-martop"><i class="hkjl-tzsj"></i>投资时间：'+getTime(e.addtime,"yyyy-MM-dd hh:mm")+'<span>本金：'+e.account_tender+'元</span></p>'+
+							 	'<p class="hkjl-tittle"><i class="hkjl-kksj"></i>回款时间：'+getTime(e.recover_time,"yyyy-MM-dd hh:mm")+jxText+'<span>收益：'+recover_interest+'元</span></p>'+
+							 '</li>'
+						)
+					}
+					else{//满标待回款 
+						dhkcount++;
+						
+						if(e.coupon_user_use_id=="0"){
+							dhksum=dhksum+parseFloat(e.account_tender)+parseFloat(e.recover_interest);
+							recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest));
+							recover_interest = e.recover_interest
+							var jxText = ""
+						}else{
+							dhksum=dhksum+parseFloat(e.account_tender)+parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100 ;
+							recover=getFloatStr(parseFloat(e.account_tender)+parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100);
+							recover_interest = getFloatStr(parseFloat(e.recover_interest)+parseFloat(e.coupon_amount)/100)
+							var jxText = "<span class='jx-text'>(+"+parseFloat(e.coupon_rate)/100+"%)</span>"
+						}
+						if(e.recordNo){
+							str='<span class="hkjl-dai" href="https://www.51cunzheng.com/webjsapi/downLoad?recordNo='+e.recordNo+'" data-href2="'+e.ancun_url+'"><a class="hkjl-bqys" >已保全</a></span>'
+						}
+						else{
+							str='';
+						}
+						$('.dhk .mui-table-view').append(
+							'<li class="mui-table-view-cell item" borrow_nid="'+e.borrow_nid+'" has_repay="'+e.recover_status+'">'+
+							 	  e.borrow_name+
+							 	str+
+							 	'<span class="hkjl-right"><font class="hkjl-yc">待回款</font>'+recover+'<font class="hkjl-yuan">元</font>	</span>'+
+							 	'<p class="hkjl-tittle hkjl-martop"><i class="hkjl-tzsj"></i>投资时间：'+getTime(e.addtime,"yyyy-MM-dd hh:mm")+'<span>本金：'+e.account_tender+'元</span></p>'+
+							 	'<p class="hkjl-tittle"><i class="hkjl-kksj"></i>回款时间：'+getTime(e.recover_time,"yyyy-MM-dd hh:mm")+jxText+'<span>收益：'+recover_interest+'元</span></p>'+
+							 '</li>'
+						)
 					}
 				}
-			});
-			
-			/**
-			 * 下拉刷新具体业务实现
-			 */
-			function pulldownRefresh() {
-				setTimeout(function() {
-					curr_page = 1;
-					getdata(curr_page);
-					mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
-					//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
-				}, 100);
-			}
-			var count = 0;
-			/**
-			 * 上拉加载具体业务实现
-			 */
-			function pullupRefresh() {
-				setTimeout(function() {
-					//mui('#pullrefresh').pullRefresh().endPullupToRefresh(); //参数为true代表没有更多数据了。
-					curr_page = curr_page + 1;
-					getdata(curr_page);
-				}, 100);
-			}
-//			if (mui.os.plus) {
-//				mui.plusReady(function() {
-//					setTimeout(function() {
-//						mui('#pullrefresh').pullRefresh().pullupLoading();
-//					}, 100);
-//				});
-//			} else {
-//				mui.ready(function() {
-//					mui('#pullrefresh').pullRefresh().pullupLoading();
-//				});
-//			}
-      	
-//			mui.plusReady(function(){
-//				getdata(1);
-//			});
-			
-			function getdata(page){
-				request = {'borrow_status':3,'user_id':user.uid(),'order':'repay_time','epage':10};
-				request.page = page;
-				borrow.GetRecoverList({'request':request},function(res){
-					var html = template('tpl-item',res);
-					var ul = document.querySelector('#hkjl-list');
-					var upflag = res.page >= res.total_page ? true : false;
-					if(page > 1){
-						ul.innerHTML = ul.innerHTML + html;
-					}else{
-						ul.innerHTML = html;
-					}
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh(upflag);
 					
-					
-					if(res.total == 0){
-						html = '<li class="mui-table-view-cell">没有记录</li>';
-						ul.innerHTML = html;
-						mui('#pullrefresh').pullRefresh().disablePullupToRefresh();
-					}
-				});
-			}
-			
-			mui.plusReady(function(){
-				
-				getdata(1);
-				
-				var _clicked = false;
-					mui("#hkjl-list").on('tap', 'li', function(e){
-						if(!_clicked) { _clicked = true; } else { return false; }
-								e.preventDefault();
-								var borrow_nid = this.getAttribute('borrow_nid');
-								var data = {'article_id': borrow_nid};
-								var has_repay = this.getAttribute('has_repay');
-								if(has_repay>0){
-									
-									var pshow = plus.webview.create('../pshow_repay.html','pshow-repay');
-									pshow.show("slide-in-right",100);
-									_clicked = false;
-									
-									
-								}
-								else{
-									var pshow = plus.webview.create('../pshow.html','pshow-borrow',{},data);
-									pshow.addEventListener('loaded',function(){
-										mui.fire(pshow,"mui.view.show",data);
-										pshow.show("slide-in-right",100);
-										_clicked = false;
-									});
-								}
-					})
 			})
-    </script>
+			if(dmbcount){
+				dmbsum=getFloatStr(dmbsum)
+				$('.dmb .hkjl-name').html(
+					'待满标'+dmbcount+'笔<span>共计：'+dmbsum+'元</span>'
+				)
+			}
+			else{
+				$('.dmb').remove();
+			}
+			if(yhkcount){
+				yhksum=getFloatStr(yhksum)
+				$('.yhk .hkjl-name').html(
+					'已回款'+yhkcount+'笔<span>共计：'+yhksum+'元</span>'
+				)
+			}
+			else{
+				$('.yhk').remove();
+			}
+			if(dhkcount){
+				dhksum=getFloatStr(dhksum)
+				$('.dhk .hkjl-name').html(
+					'待回款'+dhkcount+'笔 <span>共计：'+dhksum+'元</span>'
+				)
+			}
+			else{
+				$('.dhk').remove();
+			}
+			if(yhkcount==0&&dhkcount==0&&dmbcount==0){
+				$('.mui-content').html(
+					'<div class="notes-box">'+
+					'<i class="notes-moblie"></i>'+
+					'<p class="no-records-size">暂无记录</p>'+
+					'</div>'
+				)
+			}
+			
+		});
+		
+		
+		
+		var _clicked = false;
+			mui(".mui-content").on('tap', 'li.item', function(e){
+				if(!_clicked) { _clicked = true; } else { return false; }
+						e.preventDefault();
+						var borrow_nid = this.getAttribute('borrow_nid');
+						var data = {'article_id': borrow_nid};
+						var has_repay = this.getAttribute('has_repay');
+						if(has_repay>0){
+							
+							var pshow = plus.webview.create('../pshow_repay.html','pshow-repay');
+							pshow.show("slide-in-right",100);
+							_clicked = false;
+							
+							
+						}
+						else{
+							var pshow = plus.webview.create('../pshow.html','pshow-borrow',{},data);
+							pshow.addEventListener('loaded',function(){
+								mui.fire(pshow,"mui.view.show",data);
+								pshow.show("slide-in-right",100);
+								_clicked = false;
+							});
+						}
+			})
+			mui(".mui-content").on('tap', 'span.hkjl-dai', function(e){
+				e.stopPropagation();
+				if(plus.os.name=='iOS'){
+					var href = this.getAttribute('href');
+					//console.log(JSON.stringify(data))
+					console.log(href)
+					//通知模板修改标题，并显示隐藏右上角图标；
+					inittemplate = getTemplate('template', 'template.html');
+						//获得共用父模板
+					var headerWebview = inittemplate.header;
+						//获得共用子webview
+					var contentWebview = inittemplate.content;
+					contentWebview.loadURL(href);
+					//var right_btn = data.right_btn || "";
+					//console.log(data.title)
+					mui.fire(headerWebview, 'updateHeader', {
+						title: '无忧存证',
+						showMenu: false
+					});
+					
+					mui.fire(headerWebview, 'loading');
+					headerWebview.show('slide-in-right', 150);
+				}
+				else{
+					var href = this.getAttribute('data-href2');
+					console.log(href)
+					plus.runtime.openURL(href);
+				}
+				
+			})
+			
+	})
+	function  getTime(date, format) {
+	    date = new Date(date * 1000);
+	    var map = {
+	        "M": date.getMonth() + 1, //月份 
+	        "d": date.getDate(), //日 
+	        "h": date.getHours(), //小时 
+	        "m": date.getMinutes(), //分 
+	        "s": date.getSeconds(), //秒  
+	        "q": Math.floor((date.getMonth() + 3) / 3), //季度 
+	        "S": date.getMilliseconds() //毫秒 
+	    };
+	    format = format.replace(/([yMdhmsqS])+/g, function(all, t){
+	        var v = map[t];
+	        if(v !== undefined){
+	            if(all.length > 1){
+	                v = '0' + v;
+	                v = v.substr(v.length-2);
+	            }
+	            return v;
+	        }
+	        else if(t === 'y'){
+	            return (date.getFullYear() + '').substr(4 - all.length);
+	        }
+	        return all;
+	    });
+	    return format;
+	}
+	function getLocalTime(nS) {     
+       return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, "").replace('GMT+8', "");      
+    }
+	
+	//将传入数据转换为字符串,并清除字符串中非数字与.的字符  
+    //按数字格式补全字符串  
+	var getFloatStr = function(num){
+        num += '';  
+        num = num.replace(/[^0-9|\.]/g, ''); //清除字符串中的非数字非.字符  
+        
+        if(/^0+/) //清除字符串开头的0  
+            num = num.replace(/^0+/, '');  
+        if(!/\./.test(num)) //为整数字符串在末尾添加.00  
+            num += '.00';  
+        if(/^\./.test(num)) //字符以.开头时,在开头添加0  
+            num = '0' + num;  
+        num += '00';        //在字符串末尾补零  
+        num = num.match(/\d+\.\d{2}/)[0];  
+        return num;
+    };
+</script>
                        
 </body>
 </html>

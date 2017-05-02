@@ -1,326 +1,561 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<title>聚车金融</title>
-	     <link href="css/app_style.css" rel="stylesheet" type="text/css">
-    <link href="css/mui.min.css" rel="stylesheet"/>
-       <script src="js/mui.min.js"></script>
-    	<script type="text/javascript" charset="utf-8">
-      mui.init();
-    </script>
-       
- <style>
-    	.Assets-info .item1 { box-sizing: content-box; }
-    	.counts p { color: #ffffff;}
-  .mui-btn-danger  	
-.Assets-info .title{ height:20px; line-height:20px; margin-top:10px;}
-.Assets-info .item1 { height:auto; width:100%; padding:10px; border-bottom:#f7595f 1px solid;}
-.Assets-info .item1 .accounts { position: absolute; right: 10px; top: 20px; }
-.Assets-info .item1 .accounts .count { color: #fff; line-height:20px; }
-.Assets-info .item1 .price{ font-size:28px; line-height:44px; }
-.Assets-info .item1 .accounts .price{ font-size:16px; line-height:20px; min-width: 60px; display: inline-block; }
-.Assets-info .item2 .price{ font-size:28px; line-height:44px;}
-.Assets-info .item2 { position: relative; }
-.Assets-info .item2 .btns { position: absolute; right: 10px; top: 5px; }
-.Assets-info .item2 .btn{ height:28px;  line-height:26px;border:#fffdd1 1px solid; background:#fffdd1; display:block; float:right; margin:6px 0 0 10px; color:#d5393c; font-size:16px;}
-.Assets-info .item2 .btn.bgn{ background:none; border-color:#fff; color:#FFF;}
-    </style>
-</head>
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>聚车金融</title>
+		<link href="css/app_style.css" rel="stylesheet" type="text/css">
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <script src="js/mui.min.js"></script>   
+		<style>
+			.Assets-info .item1 {
+				box-sizing: content-box; 
+			} 
+			.counts p {
+				color: #ffffff;
+			}
+			.mui-btn-danger  	
+			.Assets-info .title{   
+				height:20px; 
+				line-height:20px; 
+				margin-top:10px;
+			}
+			.Assets-info .item1 { 
+				height:auto; 
+				width:100%; 
+				padding:10px; 
+				border-bottom:#f7595f 1px solid;
+			}
+			.Assets-info .item1 .accounts { 
+				position: absolute; 
+				right: 10px; 
+				top: 20px; 
+			}
+			.Assets-info .item1 .accounts .count { 
+				color: #fff; 
+				line-height:20px; 
+			}
+			.Assets-info .item1 .price{ 
+				font-size:28px; 
+				line-height:44px; 
+			}
+			.Assets-info .item1 .accounts .price{ 
+				font-size:16px; 
+				line-height:20px; 
+				min-width: 60px; 
+				display: inline-block; 
+			}
+			.Assets-info .item2 .price{ 
+				font-size:28px; 
+				line-height:44px;
+			}
+			.Assets-info .item2 { 
+				position: relative; 
+			}
+			.Assets-info .item2 .btns { 
+				position: absolute; 
+				right: 10px; 
+				top: 5px; 
+			}
+			.Assets-info .item2 .btn{ 
+				height:28px;  
+				line-height:26px;
+				border:#fffdd1 1px solid; 
+				background:#fffdd1; 
+				display:block; 
+				float:right; 
+				margin:6px 0 0 10px; 
+				color:#d5393c; 
+				font-size:16px;
+			}
+			.Assets-info .item2 .btn.bgn{ 
+				background:none; 
+				border-color:#fff; 
+				color:#FFF;
+			}
 
-<body>
-    	<div class="mui-scroll-wrapper">
-	<div class="mui-scroll">
-    <!--内容-->
-      <div class="nrk">
-	    <div class="zzck">
-	      <h2>总资产（元）</h2>	
-	      <h1 id="total">0.00</h1>
-	    </div>
-	    <ul class="zzc_syk">
-	      <li>
-	      	<div class="zzc_sy">我的收益（元）</div>
-	      	<P class="zzc_syje" id="income">0.00</P>
-	      </li>
-	      <li><a href="user/hkjl.html" class="tap" data='{"title":"回款记录"}' >
-	      	<div class="zzc_sy">待收金额（元）</div>
-	      	<P class="zzc_syje" id="await">0.00</P></a>
-	      </li>	
-	    </ul>
-	    <div class="zhyek">
-	    	<div class="zhye_zjk">
-	    		<div class="zzc_sy">账户余额（元）</div>	    		
-	      	    <P class="zzc_syje" id="balance">0.00</P>
-	    	</div>
-	    	<div class="zhye_zjk zjk2">
-	    		<ul>
-                  <li>
-                  	<a href="withdraw.html" class="tap mui-btn mui-btn-danger mui-btn-outlined bgn" data='{"title":"提现"}'>提现</a>
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell:before {
+			    position: absolute;
+			    right: 0;
+			    top: 0px;
+			    right: 0;
+			    width: 1px;
+			    content: '';
+			    transform-origin: 0 0;
+			    -webkit-transform: scaleX(.5);
+			    transform: scaleX(.5); 
+			    background-color: #eee;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+				border-right:0px;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell:before{
+				position: absolute;
+			    right: 0;
+			    top: 0px;
+			    right: 0;
+			    width: 1px;
+			    height:100%;
+			    content: '';
+			    transform-origin: 0 0;
+			    -webkit-transform: scaleX(.5);
+			    transform: scaleX(.5); 
+			    background-color: #eee;
+			}
+			body{
+				background: #F8f8f8;
+			}
+			.mui-content{
+				background: #F8f8f8;
+			}
+			.show-eye{
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				right: 20px;
+				top: 15px;
+			}
+			#zzck{
+				position: relative;
+			}
+			.open-eye{
+				width: 26px;
+				height: 26px;
+				background: url('images/icon_new.png') no-repeat 0 -166px; 
+				background-size: 210px auto; 
+			}
+			.close-eye{
+				width: 26px;
+				height: 26px;
+				background: url('images/icon_new.png') no-repeat 0 -192px; 
+				background-size: 210px auto;  
+			}
+		</style>
+	</head>
 
-                  	<!--<a class="mdialog1" href="javascript:;">
-                  		<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined">
-					        提现
-				        </button>-->
-                  	</a>
-                  </li>
-                  <li>
-                  	<a href="w_recharge.html" id="recharge" class="tap mui-btn mui-btn-danger noopen" data='{"title":"充值"}'>充值</a>
-                  	<!--<a class="mdialog2" href="javascript:;">
-                  	  <button type="button" class="mui-btn mui-btn-danger ">
-					    充值
-				      </button>-->
-                  	</a>
-                  </li>
-	    		</ul>
-	    	</div>
-	    </div>
+	<body>
 	    
-			<ul class="mui-table-view mui-grid-view mui-grid-9">
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-						<a href="userinfo.html" class="tap" data='{"title":"个人中心"}'>
-						<span class="icon icon-zx"></span>
-						<div class="mui-media-body">个人中心</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="user/tzjl.html" class="tap" data='{"title":"我的投资"}'>
-						<span class="icon icon-tz"></span>
-						<div class="mui-media-body">我的投资</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">			
-					<a href="user/zjjl.html" class="tap" data='{"title":"资金明细"}'>
-						<span class="icon icon-zd"></span>
-						<div class="mui-media-body">资金明细</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				   <a href="mortgage.html" class="tap" data='{"title":"我要按揭"}' >
-						<span class="icon icon-aj"></span>
-						<div class="mui-media-body">我要按揭</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border-bottom-width: 0.5px;}">
-				<a href="user/wdhb.html" class="tap" data='{"title":"我的红包"}'>
-						<span class="icon icon-jf"></span>
-						<div class="mui-media-body">我的红包</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="user/yqyl.html" class="tap" id="user_yqyl" data='{"title":"邀请有礼","right_btn":"好友(0)"}'>
-						<span class="icon icon-yq"></span>
-						<div class="mui-media-body">邀请好友</div>
-					</a>
-				</li>
-					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				   <a href="phone-charge.html" class="phonecharge" data='{"title":"手机充值"}' >
-						<span class="icon icon-cz"></span>
-						<div class="mui-media-body">手机充值</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border-bottom-width: 0.5px;}">
-				<a href="user/yunphone.html" class="tap" data='{"title":"免费电话"}'>
-						<span class="icon icon-dh"></span>
-						<div class="mui-media-body">免费电话</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#" class="tap" data='{"title":"积分兑换"}'>
-						<span class="icon icon-hdjf"></span>
-						<div class="mui-media-body">积分兑换</div>
-					</a>
-				</li>
-			</ul>
-						    
-	        <div class="zhan">&nbsp;&nbsp;账户资金享有银行级别安全保障</div>
-	   
-</div>
-</div>
-</div>
-	<script>		   	
-		   	mui('.mui-scroll-wrapper').scroll({
-            deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-});
-		   	</script>
-     <!--<div class="ui_dialog ui_dialog_demo1">
-	    		<div class="ui_dialog_con ui_dialog_con1">
-	    			
-					<p>敬请期待中...
-					</p>
-	    			<div class="ui_dialog_btn">
-	    				<button>确  定</button>
-	    			</div>
+		<div class="mui-content">
+    	<!--内容-->
+      		<div class="nrk">
+	    		<div class="zzck" id="zzck">
+	      			<h2>总资产（元）</h2>	
+	      			<h1 id="total">****</h1>
+	      			<div class="show-eye open-eye"> 
+	      				
+	      			</div>
 	    		</div>
-	    	</div>-->
-<script src="js/jquery-1.11.2.min.js"></script>
-<script src="js/common.js"></script>
-<script src="js/api.js"></script>
-<script>
-	mui.plusReady(function(){
-		
-//		
-//document.getElementById("click_dialog2").addEventListener('tap', function() {
-//				var btnArray = ['确定'];
-//				mui.confirm(' ','敬请期待...', btnArray, function(e) {
-//					if (e.index == 1) {
-////						window.location.href = 'weixin:WXSceneSession';	
-//return false;
-//					} else {
-//						return false;
-//					}
-//				})
-//			});	
-//		
-		getdata();
+	    		<ul class="zzc_syk">
+	      			<li>
+	      				<div class="zzc_sy">我的收益（元）</div>
+	      				<P class="zzc_syje" id="income">****</P>
+	      			</li>
+	      			<li>
+	      				<div class="zzc_sy">待收金额（元）</div>
+	      				<P class="zzc_syje" id="await">****</P>
+	      			</li>	
+	    		</ul>
+			    <div class="zhyek">
+			    	<div class="zhye_zjk">
+			    		<div class="zzc_sy">账户余额（元）</div>	    		
+			      	    <P class="zzc_syje" id="balance">****</P>
+			    	</div>
+			    	<div class="zhye_zjk zjk2">
+			    		<ul>
+		                	<li>
+		                  		<a href="withdraw.html" id="turnWithdraw" class=" mui-btn mui-btn-danger mui-btn-outlined bgn " data='{"title":"提现","right_btn":"提现记录"}'>提现</a>
+		                  		</a>
+		                  	</li>
+		                  	<li>
+		                  		<a href="w_recharge.html" id="recharge" class="tap mui-btn mui-btn-danger noopen" data='{"title":"充值","right_btn":"充值记录"}'>充值</a>
+		                  		</a>
+		                  	</li>
+			    		</ul>
+			    	</div>
+			   </div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+							<a href="userinfo.html" class="tap" data='{"title":"个人中心"}'>
+							<span class="icon icon-zx"></span>
+							<div class="mui-media-body">个人中心</div>
+						</a>
+						<div id="auditFail" style="display: none; top:14%;right: 16%; position: absolute; width: 8px;height: 8px;border-radius: 50%;background: #F13F3F;"></div>
+					</li>
+					<li id="mytz" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="user/hkjl.html" class="hkjl tap" data='{"title":"回款记录"}'>
+							<span class="icon icon-tz"></span>
+							<div class="mui-media-body">回款记录</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">			
+						<a href="user/zjjl.html" id="zjmx" data='{"title":"资金明细"}'>
+							<span class="icon icon-zd"></span>
+							<div class="mui-media-body">资金明细</div>
+						</a>
+					</li>
+					<li id='jfMall' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="integral_mall.html" class="tap" id="jfmall" data='{"title":"积分商城","right_btn":"规则"}'>
+							<span class="icon icon-hdjf"></span>
+							<div class="mui-media-body">积分商城</div>
+					</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border-bottom-width: 0.5px;}">
+					<a href="user/wdhb.html" class="tap" data='{"title":"我的券包","right_btn":"规则"}'>
+							<span class="icon icon-jf"></span>
+							<div class="mui-media-body">我的券包</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="user/yqyl.html" class="tap" id="user_yqyl" data='{"title":"邀请有礼","right_btn":"好友(0)"}'>
+							<span class="icon icon-yq"></span>
+							<div class="mui-media-body">邀请好友</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					   <a href="mortgage.html" class="tap" data='{"title":"我要按揭"}' >
+							<span class="icon icon-aj"></span>
+							<div class="mui-media-body">我要按揭</div>
+						</a>
+					</li>
+					<li id="tyMoney" class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="border-bottom-width: 0.5px;}">
+					<a href="user/experience_money.html" class="tap"  data='{"title":"我的体验金","right_btn":"明细"}'>
+							<span class="icon icon-dh"></span>
+							<div class="mui-media-body">体验金</div>
+						</a>
+					</li>
+				
+					<li id='llcz' class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					   <a href="phone-charge.html" class="phonecharge" data='{"title":"手机充值"}' >
+							<span class="icon icon-cz"></span>
+							<div class="mui-media-body">手机充值</div>
+						</a>
+					</li>
+				</ul>			    
+	        	<div class="zhan">&nbsp;&nbsp;账户资金享有银行级别安全保障</div>
+			</div>
+			<div style="height: 20px;">
+				
+			</div>
+		</div>
+	    <div class="ui_dialog ui_dialog_demo1">
+			<div class="ui_dialog_con ui_dialog_con1">
+				<p>敬请期待中...</p>
+				<div class="ui_dialog_btn">
+					<button>确  定</button>
+				</div>
+			</div>
+		</div>
+		<script src="js/jquery-1.11.2.min.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/api.js"></script>
+		<script>
+			mui.plusReady(function(){
+			//	plus.webview.create("integral_mall.html","integral_mall.html")
+				if(user.utoken()){
+					
+					functionCom.checkToken(function(res){
+						
+						if(res.error_no==200){
+						}
+					})	
+				}
+				$('#tyMoney').removeClass('user-new-jf');
+				if(!store.get('mytyopen')){
+					//$('#jfMall').addClass('user-new-jf');
+					//$('#tyMoney').addClass('user-new-jf');
+				}
+				//无效预加载
+				/*mui.preload({
+					url:'user/hkjl.html',
+					styles: {
+						popGesture: 'hide'
+					}
+				}); */
+				document.getElementById("total").addEventListener('tap', function() {
+					//判断异地登录
+					functionCom.checkToken(function(res){
+						//console.log(res.error_no)
+						if(res.error_no==200){
+							mui.openWindow({
+								url:"zcmx.html",
+								id:"zcmx.html",
+								styles:{
+									"popGesture":"close"
+								},
+								show:{autoShow:true,"aniShow":"pop-in","duration":300}
+							})
+							var zcmx = plus.webview.getWebviewById('zcmx.html');
+							zcmx.addEventListener('loaded',function(){
+								mui.fire(zcmx,'initpage',{	
+								});
+							});
+						}
+					})
+				})
+				getdata();
+				
+				var template = getTemplate('usertemplate', 'template.html');
+				mui("body").on('tap','a.phonecharge',function(){
+					that=this
+					var request={}
+					closePhone.GetPhoneChargeStatus({'request':request},function(res){
+						if(res.status>0){
+							//console.log(JSON.stringify(res))
+							uid = user.uid();
+							if(!uid){
+								login();
+								return;
+							}
+							if(that.classList.contains('noopen')){
+								return;
+							}
+							
+							//判断异地登录
+							functionCom.checkToken(function(res){
+								//console.log(res.error_no)
+								if(res.error_no==200){
+									mui.openWindow({
+										url:'phone-charge.html', 
+										id:'phone-charge.html',
+										styles:{popGesture:'close'},
+										show:{autoShow:true,"aniShow":"pop-in","duration":300},
+										waiting:{autoShow:false}
+									});
+									var phonecharge = plus.webview.getWebviewById('phone-charge.html');
+									phonecharge.addEventListener('loaded',function(){
+										mui.fire(phonecharge,'initpage')	
+									});	
+								}
+							})
+							
+						}else{
+							//console.log(JSON.stringify(res))
+							mui.alert(res.msg)
+						}
+						
+					})
+				})
+				mui("body").on('tap','a.tap',function(){
+					uid = user.uid();
+					if(!uid){
+						login();
+						return;
+					}
+					if(this.classList.contains('noopen')){
+						return;
+					}
+					var url = this.getAttribute('href');
+					href = this.href;	
+					var data = this.getAttribute('data');
+					data = eval("(" + data + ")");
+					if(this.classList.contains('pullrefresh')){
+						template = getTemplate('pulltemplate', 'template.html');
+					}else{
+						template = getTemplate('usertemplate', 'template.html');
+					}
+						//获得共用父模板
+					var headerWebview = template.header;
+						//获得共用子webview
+					var contentWebview = template.content;
+					contentWebview.loadURL(href);
+					var right_btn = data.right_btn || "";
+					mui.fire(headerWebview, 'updateHeader', {  
+						title: data.title,
+						showMenu: false,
+						right_btn:right_btn
+					});
+					//判断异地登录
+					functionCom.checkToken(function(res){
+						//console.log(res.error_no)
+						if(res.error_no==200){
+						    setTimeout(function(){  
+						        headerWebview.show('pop-in',300); 
+						    },200);
+						}
+					})//结束	
+					mui.fire(headerWebview, 'loading');
+						
+				})
+				document.getElementById("turnWithdraw").addEventListener("tap",function(e){
+					uid = user.uid();
+					if(!uid){
+						login();
+						return;
+					}
+					var nowTime = new Date().getTime();
+	    			var clickTime = $(this).attr("ctime");
+	    			if( clickTime != 'undefined' && (nowTime - clickTime < 1000)){
+				        return false;
+				    }else{
+				    	$(this).attr("ctime",nowTime);
+				    }
+				    var withdraw_header = plus.webview.create("withdraw_header.html","withdraw_header.html",{popGesture:"close"})				
+				    userbank.get({token:user.utoken()},function(res){
+						if(res.result.check_status == 3){
+							mui.alert('您的银行卡信息正在审核中，当前无法进行该操作，我们会为您尽快审核。谢谢！',function(){
+								//mui.back()
+							})
+							return false;
+						}else{
+							//判断异地登录
+							functionCom.checkToken(function(res){
+								//console.log(res.error_no)
+								if(res.error_no==200){
+									setTimeout(function(){
+										withdraw_header.show("pop-in",300)
+									},200)
+									withdrawDel=plus.webview.getWebviewById("withdraw_header.html")
+									withdrawDel.addEventListener( "popGesture", function(e){
+										var indexSubSx=withdrawDel.opener()
+										mui.fire(indexSubSx,"initpage")
+									}, false );
+									mui.fire(withdrawDel,"initpage")	
+								}
+							})	//结束
+						}
+					})	
+				})
+				document.getElementById("recharge").addEventListener('tap',function(e){
+					var nowTime = new Date().getTime();
+	    			var clickTime = $(this).attr("ctime");
+	    			if( clickTime != 'undefined' && (nowTime - clickTime < 1000)){
+				        return false;
+				    }else{
+				    	$(this).attr("ctime",nowTime);
+				    }
+					//判断异地登录
+					userbank.get({token:user.utoken()},function(res){
+						if(res.result.check_status == 3){
+							mui.alert('您的银行卡信息正在审核中，当前无法进行该操作，我们会为您尽快审核。谢谢！',function(){
+								//mui.back()
+							})
+							return false;
+						}else{
+							functionCom.checkToken(function(res){
+								//console.log(res.error_no)
+								if(res.error_no==200){
+									mui.openWindow({
+										'url':'w_recharge.html','id':'w_recharge.html', 
+										'styles':{'top':'0px',"popGesture":"close","aniShow":"pop-in","duration":300},
+										'show':{'autoShow':true},'waiting':{'autoShow':false}
+									});
+								}
+							})//结束
+						}
+					})
+				})
 
-		plus.webview.currentWebview().setStyle({scrollIndicator:"none"});
-		var template = getTemplate('usertemplate', 'template.html');
-		mui("body").on('tap','a.phonecharge',function(){
-			uid = user.uid();
-			if(!uid){
-				login();
-				return;
-			}
-			if(this.classList.contains('noopen')){
-				return;
-			}
-			var phonecharge = plus.webview.create('phone-charge.html');
-			//var phonecharge = plus.webview.getWebviewById('phone-charge.html');
-			//plus.nativeUI.showWaiting();
-			setTimeout(function(){
-				phonecharge.show("slide-in-right",100);
-			},150);
-			//触发详情页面的newsId事件
-			/*phonecharge.addEventListener('loaded',function(){
-				mui.fire(phonecharge,'getnumber',{
-				arr:arr
-				});
-			});*/
-		})
-		mui("body").on('tap','a.tap',function(){
-			uid = user.uid();
-			if(!uid){
-				login();
-				return;
-			}
-			if(this.classList.contains('noopen')){
-				return;
-			}
-				var url = this.getAttribute('href');
-				href = this.href;
-//			if(url == "bbs/tsjy.html"){
-//				mui.openWindow({'url':'https://www.ifcar99.com/bbs/forum.php?mod=forumdisplay&fid=46',show:{"aniShow":"none"},waiting:{"autoShow":false}});
-//				return false;
-//			}
 				
+				document.getElementById("zjmx").addEventListener('tap',function(e){
+					//判断异地登录
+					functionCom.checkToken(function(res){
+						if(res.error_no==200){
+							var nowTime = new Date().getTime();
+			    			var clickTime = $(this).attr("ctime");
+			    			if( clickTime != 'undefined' && (nowTime - clickTime < 3000)){
+						        return false;
+						    }else{
+						    	$(this).attr("ctime",nowTime);
+						    }
+							var zjjlPage = plus.webview.create("user/zjjl.html","zjjl.html",{popGesture:"close"})
+							setTimeout(function(){
+								zjjlPage.show("pop-in",300) 
+							},300)
+							 
+						}
+					})//结束
+					
+				})
+				mui('.zzck').on('tap','.show-eye',function(e){
+					e.stopPropagation()
+					//console.log("5")
+					//默认close-eye
+					if($(this).hasClass('close-eye')){
+						user.getInfo(function(res){
+							if(res){
+				//				console.log(JSON.stringify(res));
+								$('#total').html(res.total);
+								$('#balance').html(res.balance);
+								$('#await').html(res.await);
+								$('#frost').html(res.frost);
+								$('#income').html(res.ljincome);
+							}
+						});
+						$(this).addClass('open-eye').removeClass('close-eye')
+						store.delete('showeye')
+					}else{
+						$('#total').html('****');
+						$('#balance').html('****');
+						$('#await').html('****');
+						$('#income').html('****');
+						$(this).addClass('close-eye').removeClass('open-eye')
+						store.set('showeye',1, 3600 * 24 * 365) 
+						
+					}
+				})
 				
-				var data = this.getAttribute('data');
-				data = eval("(" + data + ")");
-				
-				//通知模板修改标题，并显示隐藏右上角图标；
-				if(this.classList.contains('pullrefresh')){
-					template = getTemplate('pulltemplate', 'template.html');
-				}else{
-					template = getTemplate('usertemplate', 'template.html');
+				document.addEventListener('mui.view.refresh',function(){
+					getdata();
+				},false);
+			})
+			
+			document.addEventListener('initpage',function(e){
+				//alert("4")
+			//	plus.navigator.setStatusBarBackground("#fff");
+				//mui('.mui-scroll-wrapper').scroll().scrollTo(0,0)	
+				$('#tyMoney').removeClass('user-new-jf');
+				if(!store.get('mytyopen')){
+					//$('#tyMoney').addClass('user-new-jf');
 				}
 				
-					//获得共用父模板
-				var headerWebview = template.header;
-					//获得共用子webview
-				var contentWebview = template.content;
-				contentWebview.loadURL(href);
-				var right_btn = data.right_btn || "";
-				mui.fire(headerWebview, 'updateHeader', {
-					title: data.title,
-					showMenu: false,
-					right_btn:right_btn
+				mui("body").on('tap','#tyMoney',function(){
+					//store.set('mytyopen', 1, 3600 * 24 * 365);	//标志暂存时间30秒
+				})
+				getdata();
+			},false);	
+			function getdata(){
+				user.getInfo(function(res){
+					if(res){
+						if(store.get('showeye')){//有show标志
+							$('#total').html('****');
+							$('#balance').html('****');
+							$('#await').html('****');
+							$('#income').html('****');
+							$('.show-eye').removeClass('open-eye').addClass('close-eye')
+						}else{
+							$('#total').html(res.total);
+							$('#balance').html(res.balance);
+							$('#await').html(res.await);
+							$('#income').html(res.ljincome)
+							$('.show-eye').removeClass('close-eye').addClass('open-eye')
+						}
+		//				console.log(JSON.stringify(res));
+						$('#frost').html(res.frost);
+						$('#realname').html(res.realname);
+						if(res.realname_status == "1"){
+							$("#realname_dsp").html('已认证');
+							//mui(".Assets-smrz a")[0].classList.add('noopen');
+						}
+					}
 				});
-				mui.fire(headerWebview, 'loading');
-				headerWebview.show('slide-in-right', 150);
-
-		})
-		
-		document.getElementById("recharge").addEventListener('tap',function(e){
-			//console.log("recharge");
-			mui.openWindow({'url':'w_recharge.html','id':'w_recharge.html', 'styles':{'top':'0px'},'show':{'autoShow':false},'waiting':{'autoShow':false}});
-		})
-		document.addEventListener('mui.view.refresh',function(){
-			getdata();
-		},false);
-	})
-	
-	document.addEventListener('initpage',function(e){
-		getdata();
-					request = {};
-					request.user_id = user.uid();
-//					user.loginbbs({'request':request},function(res){
-//						//console.log(JSON.stringify(res));
-//						if(res.src){
-//						var script = document.createElement('script');
-//					    script.setAttribute('type', 'text/javascript');
-//					    script.setAttribute('src', res.src);
-//					    document.getElementsByTagName('head')[0].appendChild(script);
-//					   }
-//					})
-	},false);
-	
-	function getdata(){
-		
-		user.getInfo(function(res){
-			if(res){
-//				console.log(JSON.stringify(res));
-				$('#total').html(res.total);
-				$('#balance').html(res.balance);
-				$('#await').html(res.await);
-				$('#frost').html(res.frost);
-				$('#income').html(res.ljincome);
-				$('#realname').html(res.realname);
-				if(res.realname_status == "1"){
-					$("#realname_dsp").html('已认证');
-					//mui(".Assets-smrz a")[0].classList.add('noopen');
-				}
+				userbank.get({"token":user.utoken()},function(res){   
+					if(res.result.check_status==2){
+						$("#auditFail").css('display','block')
+					}else{
+						$("#auditFail").css('display','none')
+					}
+      			})
+				//邀请好友添加data
+		  		request = {'user_id':user.uid(),'epage':1};
+		  		user.GetFriendsInvite({'request':request},function(res){
+		  			//console.log(JSON.stringify(res));
+		  			
+		  			// {"title":"邀请有礼","right_btn":"好友(0)"}
+		  			data = {"title":"邀请有礼"};
+		  			data.right_btn = "好友(" + res.total + ")";
+		  			document.getElementById("user_yqyl").setAttribute('data',JSON.stringify(data));
+		  		});
 			}
-		});
-
-		request = {'user_id':user.uid()};
-		borrow.recordcounts({'request':request},function(res){
-//			console.log(JSON.stringify(res));
-			$('#recordcount1').html('(' + res.record.count1 + ')');
-			$('#recordcount2').html('(' + res.record.count2 + ')');
-			$('#recordcount3').html('(' + res.record.count3 + ')');
-		})
-		
-      		request = {'user_id':user.uid(),'epage':1};
-      		user.GetFriendsInvite({'request':request},function(res){
-      			//console.log(JSON.stringify(res));
-      			
-      			// {"title":"邀请有礼","right_btn":"好友(0)"}
-      			data = {"title":"邀请有礼"};
-      			data.right_btn = "好友(" + res.total + ")";
-      			document.getElementById("user_yqyl").setAttribute('data',JSON.stringify(data));
-      		});
-
-//		account.GetOne({'request':request},function(res){
-//			console.log(store.get('username'));
-//			$('#total').html(res.total);			
-//			$('#balance').html(res.balance);
-//			$('#await').html(res.await);
-//			$('#income').html(res.income);
-//			
-//			$('#recordcount1').html('(' + res.record.count1 + ')');
-//			$('#recordcount2').html('(' + res.record.count2 + ')');
-//			$('#recordcount3').html('(' + res.record.count3 + ')');
-//		})
-
-//		mui.post(apiurl + '?module=account&action=GetOne',{'request':request},function(res){
-//			console.log(res);
-//		})
-//		user.userinfo(function(res){
-//
-//		});
-	}
-</script>
-
-</body>
+		</script>
+	</body>
 </html>

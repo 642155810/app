@@ -10,28 +10,43 @@
 <link href="css/css.css" rel="stylesheet" type="text/css" />
 <style>
 .reg-txt{ color: #333; }	
+.getYY{ width: 100%; 
+		height: 40px; 
+		margin: 25px 0px -8px 0px;
+		text-align: center;
+		color: #656565;
+		font-size: 12px;
+		display: none;
+		}
+.getYY a{ display: inline-block; 
+		color:#e62600;
+		text-decoration: underline;
+		}
+.getYY a.gray_a{ color:#757575;
+		}
 </style>
 </head>
 <body>
 <header class="mui-bar mui-bar-nav header">
-<h1 class="name">会员注册</h1>
+<h1 class="name" style="color: #333;font-weight: bold;">注册</h1> 
 <a href="javascript:void(0);" class="back mui-action-back" id="back"><i class="ico-back icon"></i></a>
 </header>
 <div class="wrap clearfix mui-content">
 <ul class="reg-form clearfix">
-<li><div class="input-box"><i class="ico-sjh ico24 icon"></i><input type="text" id="mobile" name="mobile" class="reg-txt" placeholder="手机号"></div></li>
-<li><div class="input-box yzm"><i class="ico-yzm ico24 icon"></i><input type="text" id="mobilecode" name="mobilecode" class="reg-txt" placeholder="验证码"><a href="javascript:sendmobilecode();" class="getyzm" id="getyzm">发送验证码</a></div></li>
-<li><div class="input-box"><i class="ico-pwd2 ico24 icon"></i><input type="password" id="password" name="password" class="reg-txt" placeholder="输入密码"></div></li>
-<li><div class="input-box"><i class="ico-pwd2 ico24 icon"></i><input type="password" id="confirm_password" name="confirm_password" class="reg-txt" placeholder="重复输入密码"></div></li>
-<li><div class="input-box"><i class="ico-yzm ico24 icon"></i><input type="text" id="invite_userid" name="invite_userid" class="reg-txt" placeholder="邀请码（选填）"></div></li>
+<li><div class="input-box"><i class="ico-sjh ico24 icon"></i><input type="number"  id="mobile" pattern="[0-9]*"   name="mobile" class="reg-txt" placeholder="手机号"></div></li>
+<li><div class="input-box yzm"><i class="ico-yzm ico24 icon"></i><input type="number" pattern="[0-9]*" id="mobilecode" name="mobilecode" class="reg-txt" placeholder="验证码"><a href="javascript:" class="getyzm" id="getyzm">发送验证码</a></div></li>
+<div class="input-box getYY">长时间收不到验证码，可尝试 <a href="javascript:" class="get_yy_code yy_button" id="yyyzm">语音接听验证码</a></div>
+<li><div class="input-box"><i class="ico-pwd2 ico24 icon"></i><input type="password" id="password" name="password" class="reg-txt" placeholder="登录密码"></div></li>
+<li><div class="input-box"><i class="ico-pwd2 ico24 icon"></i><input type="password" id="confirm_password" name="confirm_password" class="reg-txt" placeholder="确认密码"></div></li>
+<li><div class="input-box"><i class="ico-yzm ico24 icon"></i><input type="number" pattern="[0-9]*" id="invite_userid" name="invite_userid" class="reg-txt" placeholder="邀请码（选填）"></div></li>
 <li class="dsp">如果您已经有账号请<span class="space"></span><a href="javascript:mui.back();" class="c5" id="login-btn">登录</a></li>
-<li class="opn"><button type="button" class="btn Large" id="reg-btn">注册会员</button></li>
+<li class="opn"><button type="button" class="btn Large" id="reg-btn">确定</button></li>
 <input type="hidden" name="reg_type" value="phone" />
 </ul>
 
 <div class="tel-info">
 <a class="number" href="" id='confirmBtn'><i class="ico-tel icon"></i>4001-123-990</a>
-<div class="title">工作时间09:00-17:00</div>
+<div class="title">工作时间09:00-17:30</div>
 </div>
 </div>
 <script language="javascript" type="text/javascript" src="js/mui.min.js"></script>
@@ -41,6 +56,15 @@
 
 <script>
 	mui.init();
+	
+	//限制手机手机位数
+	$("#mobile").keyup(function(){
+		var klength=$(this).val().length
+		if(klength>11){
+			$(this).val($(this).val().substr(0,11))
+			console.log($(this).val())	
+		}
+	})
 	
 	mui.plusReady(function(){
 	})
@@ -56,6 +80,7 @@
 </script>
 
 <script type="text/javascript">
+var count=0;
 	$(function(){
 		$('#reg-btn').on('click',function(){
 			request = {};
@@ -64,7 +89,7 @@
 			request.mobilecode = $("#mobilecode").val();
 			request.password = $("#password").val();
 			request.confirm_password = $("#confirm_password").val();
-			request.invite_userid = $("#invite_userid").val();			
+			request.invite_userid = $("#invite_userid").val();		
 			request.username = $("#mobile").val();
 			if(request.mobile == ''){
 				alert('请输入手机号码注册');
@@ -78,14 +103,19 @@
 				alert('请输入您的短信验证码');
 				return false;
 			}
+			if(request.password.length<6){
+				alert('密码最低为6位');
+				return false;
+			}
 			if(request.confirm_password != request.password){
 				alert('两次输入的密码不一致');
 				return false;
 			}
 			
 			$("input:focus").blur();
+			//console.log(JSON.stringify(request)); 
 			user.register(request,function(res){
-				console.log(JSON.stringify(res));
+				//console.log(JSON.stringify(res));
 				if(res.status == 1){
 					plus.nativeUI.toast("注册成功！");
 					if(res.uid){
@@ -93,7 +123,10 @@
 							user.deleteCache(uid); //清空缓存 
 							store.delete('uid');
 							store.delete('utoken');
-							
+							/**11.16add**/
+							store.delete('shoushi_status');
+						    store.delete('shoushi_psw');
+							plus.storage.removeItem('shoushimima');
 							//设置登陆信息,一年有效期
 							store.set('uid', uid, 3600 * 24 * 365);
 							store.set('utoken', res.utoken, 3600 * 24 * 365);
@@ -107,9 +140,37 @@
 						mui.back();
 					}
 				}else{
+					console.log(res.msg); 
 					alert(res.msg);
 				}
 			})
+		})
+		
+		$('#getyzm').on('click',function(){
+			if($(this).attr('disabled')){
+				return false;
+			}
+			else{
+				sendmobilecode()
+				$('.get_yy_code').removeClass('gray_a')
+				if(count==0){
+	             /* setTimeout(function(){
+	                  
+	              }, 60000)
+	              */
+	            }
+			}
+			
+		})
+		$('.get_yy_code').on('click',function(){
+			if($('#getyzm').attr('disabled')){
+				return false;
+			}
+			else{
+				sendyycode()
+				
+			}
+			
 		})
 	})
 </script>
@@ -117,16 +178,26 @@
 var times=60,cuttime;
 function getyzm(idn){
 	times--;
+	$(idn).css("background","#999");
 	if(times>0&&times<60){
 	$(idn).text(times+"秒后重新获取");
 	$(idn).addClass("fail");
+	$(idn).attr("disabled",'disabled');
+	$('.get_yy_code').addClass('gray_a')
+	$('.get_yy_code').removeAttr('href')
 	cuttime=setTimeout(function(){getyzm(idn)},1000);
+	
 	}
 	else{
+		$('.getYY').show();
+		$(idn).css("background","#F95453");
 		$(idn).text("发送验证码");
 		times=60;
 		issend = true;
 		$(idn).removeClass("fail");
+		$(idn).removeAttr("disabled");
+		$('.get_yy_code').removeClass('gray_a')
+		$('.get_yy_code').attr("href","javascript:");
 		clearTimeout(cuttime);
 		}
 	}
@@ -149,18 +220,57 @@ function sendmobilecode(){
 			request = {'mobile': mobile,'type':'reg'};
 			//request.valicode = '';
 			user.mobilecode(request,function(res){
-				//console.log(JSON.stringify(res));
+				console.log(JSON.stringify(res)); 
 				if(res.status == 1){
 					getyzm("#getyzm");
+					$('#yyyzm').show();
 					plus.nativeUI.toast("验证码短信已发送成功！");
 					issend = false;
 				}else{
-					alert(res.msg);
+					//console.log(JSON.stringify(res));
+					plus.nativeUI.toast(res.msg);
+					//alert(res.msg);
+					issend = true;
+				}
+			})
+		}
+		else{
+			alert("验证码短信已发送,请稍候重试！");
+		}
+		return false;
+}
+
+function sendyycode(){
+	var mobile = $("#mobile").val();
+	if(mobile == ""){
+		alert("请输入手机号码！");
+		return;
+	}
+	if(/^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$/.test(mobile)){
+		if(issend && times == 60){
+			issend = false;
+			request = {'mobile': mobile,'type':'reg'};
+			//request.valicode = '';
+			user.yycode(request,function(res){
+				console.log(JSON.stringify(res));
+				if(res.status == 1){
+					getyzm("#getyzm");
+					plus.nativeUI.toast("语音验证码已发送成功！");
+					//plus.nativeUI.toast(res.msg);
+					issend = false;
+				}else{
+					//console.log(res.msg); 
+					plus.nativeUI.toast(res.msg);
 					issend = true;
 				}
 			})
 		}
 		return false;
+	}else{
+		alert("手机号码格式不对！");
+		return;
+	}
+		
 }
 </script>
 </body>

@@ -11,8 +11,65 @@
 <link href="css/css.css" rel="stylesheet" type="text/css" /> 
 
 <style type="text/css">
+body{ 
+	height: 100%;
+}
 .header:after{ height: 0px; }
-
+.login-other-box{
+	margin-top: 10%; 
+	width: 100%; 
+}
+@media screen and (min-width:320px) and (max-width:340px){.login-other-box{margin-top: 12%;}}
+@media screen and (min-width:341px) and (max-width:374px){.login-other-box{margin-top: 17%;}}
+@media screen and (min-width:375px) and (max-width:400px){.login-other-box{margin-top: 25%;}}
+@media screen and (min-width:401px) and (max-width:500px){.login-other-box{margin-top: 30%;}}
+@media screen and (min-width:800px){.login-other-box{margin-top: 20%;}}
+.login-other-box span{
+	text-align: center;
+	line-height: 30px;
+	display: block;
+	position: relative;
+	color: #999;
+	font-size: 13px;
+}
+.login-other-box span:before,.login-other-box span:after{
+	position: absolute;
+	content: "";
+	height: 1px;
+	width: 30%;
+	top: 15px;
+	background: #e6e5e5;
+	left: 8%;
+}
+.login-other-box span:after{
+	left: 62%;
+}
+.table-list{
+	height: 50px;
+	
+}
+.table-list li {
+	width: 40px;
+	height: 40px;
+	border: 1px solid #e6e5e5;
+	border-radius: 50%;
+	margin: 5px auto;
+	background: url(images/wx_logo.png) no-repeat center;
+	background-size: 25px;
+}
+.mengban{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	background: #fff;
+	bottom: 0;
+	z-index: 999;
+	display: none;
+}
+.mengban img{
+	width: 100%;
+}
 </style>
 </head>
 <body class="body-red">
@@ -27,6 +84,7 @@
 			<li><div class=" mui-input-row"><i class="ico-yhm"></i><input type="text" pattern="[0-9]*" class="login-txt mui-input-clear" id="login-username" name="mobile" placeholder="手机号码"></div></li>
 			<li><div class="mui-input-row mui-password"><i class="ico-pwd"></i><input type="password" class="login-txt mui-input-password" id="login-password" name="password" placeholder="登录密码"></div></li>
 			<li class="opn login-opn"><button class="login-btn" id="login-post">会员登录</button></li>
+			<!--<li class="opn login-opn"><button class="login-btn" id="login-wx">微信登录</button></li>-->
 			
 		</ul>
 	<div class="login-dsp">
@@ -37,19 +95,34 @@
 		</span>
 	</div>
 </div>
-
+<div class="login-other-box">
+	<span>第三方登录</span>
+	<ul class="table-list">
+		<li id="login-wx">
+		</li>
+	</ul>
+</div>
+<div class="mengban"><img src="images/IOS750.png"></div>
 <script language="javascript" type="text/javascript" src="js/mui.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/common.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/base.js"></script>
-
 <script language="javascript" type="text/javascript" src="js/api.js"></script>
+<script type="text/javascript" src="js/jQuery.md5.js" ></script>
 <script>
 
 	mui.init({'swipeBack':true});
-  
+	//限制输入手机位数
+	$("#login-username").keyup(function(){
+		var klength=$(this).val().length
+		if(klength>11){
+			$(this).val($(this).val().substr(0,11))	
+		}
+	})
 	mui.plusReady(function(){
 		//注册按钮
-		
+		loginusername = store.get('username');
+		$('#login-username').val(loginusername);
 		mui('body').on('tap', '.register-link', function() {
 			mui.openWindow({
 				url:'reg.html',
@@ -66,101 +139,190 @@
 		
 		//忘记密码
 		mui('body').on('tap', '.wjmm-link', function() {
-			mui.openWindow({
-				url:'wjmm.html',
-				show: {
-					autoShow: true,
-					duration: 300,
-					aniShow: 'slide-in-bottom'
-				},
-				waiting: {
-					autoShow: false
+			$('input').blur() 
+			if(!/^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$/.test($('#login-username').val())){
+				mui.alert('请输入正确的手机号码',function(){
+					$('#login-username').focus()
+				})
+				
+				return false
+			}
+			if($('#login-username').val()!=store.get('username')){
+				store.set('username', $('#login-username').val(), 3600 * 24 * 365);
+			}
+			
+			inittemplate = getTemplate('template', 'template.html');
+			var headerWebview = inittemplate.header;
+			var contentWebview = inittemplate.content;
+			contentWebview.loadURL("wjmm.html");
+			//var right_btn = data.right_btn || "";
+			mui.fire(headerWebview, 'updateHeader', {
+				title: "修改登录密码",
+				showMenu: false,
+				right_btn:""
+			});
+			//mui.fire(plus.webview.getWebviewById("wjmm.html"), 'getusername');
+			mui.fire(headerWebview, 'loading');
+			setTimeout(function(){
+				headerWebview.show('pop-in', 300);
+			},300)
+			
+			
+		});
+		
+		//提交登录
+		mui('body').on('tap', '#login-post', function(data) { 
+			var nowTime = new Date().getTime();
+			var clickTime = $(this).attr("ctime"); 
+			if( clickTime != 'undefined' && (nowTime - clickTime < 3000)){
+		        return false;
+		    }else{
+		    	$(this).attr("ctime",nowTime);
+		    }
+			var username = $("#login-username").val();
+			var password = $.md5($("#login-password").val());
+			if(!/^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$/.test(username)){
+				alert('手机号码错误',function(){
+					$('#login-username').focus()
+				});
+				return false;
+			}
+			if(password.length<6||password==""){
+				alert('密码错误',function(){
+					$("#login-password").focus()
+				});
+				return false;
+			}
+			$("input:focus").blur();
+			var device = JSON.stringify(getSysInfo())
+			newUser.login({"loginname":username, "password_md5":password,'from':'phone','device':device}, function(rs) {
+				if (rs.error_no==200) {
+					var uid = rs.result.user.user_id;
+					user.deleteCache(uid); //清空缓存 
+					user.clear()
+					if (!uid) {
+						plus.nativeUI.alert('用户不存在');
+						return;
+					}
+					//设置登陆信息,一年有效期
+					store.set('uid', uid, 3600 * 24 * 365);
+					store.set('utoken', rs.result.token.token, 3600 * 24 * 365);
+					store.set('username', username, 3600 * 24 * 365);
+					store.set('password', password, 3600 * 24 * 365);
+					mui.fire(plus.webview.getWebviewById('user.html'), 'mui.view.refresh');
+					mui.fire(plus.webview.getWebviewById('more.html'), 'mui.view.refresh');
+					var yzwv = plus.webview.getWebviewById('yz');
+					if(yzwv){
+						yzwv.close();
+					}
+					mui.fire(plus.webview.getLaunchWebview(), 'permission');
+//							//发送设备信息,并返回信息
+					setTimeout(function(){
+						plus.webview.currentWebview().close();
+					},300);
+					return true;
+				} else {
+					plus.nativeUI.alert(rs.info || rs.msg || rs.message|| rs.error_msg);
+					return false;
 				}
 			});
 		});
-		
-				//提交登录
-				mui('body').on('tap', '#login-post', function(data) {
-					var username = $("#login-username").val();
-					var password = $("#login-password").val();
-					$("input:focus").blur();
-					user.login({"username":username, "password":password}, function(rs) {
-						console.log(JSON.stringify(rs));
-						if (rs.status) {
-							var uid = rs.uid;
-							user.deleteCache(uid); //清空缓存 
-							store.delete('uid');
-							store.delete('utoken');
-							plus.storage.removeItem('shoushimima');
-							if (!uid) {
-								plus.nativeUI.alert('用户不存在');
-								return;
+		//微信登录
+		var auths=[];
+		plus.oauth.getServices(function(services){//认证成功回调
+			//auths = services;
+			for(var i in services){
+				var service = services[i]
+				if(service.id == 'weixin'){
+					auths.push(service)
+				}
+			}
+		},function(e){//错误回调
+		});
+		mui('.table-list').on('tap', '#login-wx', function() { 
+			var auth=auths[0]; 
+			if(auth){
+				var w=null;
+				$('.mengban').fadeIn()
+				auth.login(function(e){
+					auth.getUserInfo( function(e){						
+						wx.setInfo(auth.userInfo)
+						wx.judgeBind({unionid:wx.wuid()},function(rs){
+						//	console.log(JSON.stringify(rs))
+							if(rs.error_no==18001){
+								mui.openWindow({//未绑定
+									url:'login_wx.html',
+									id:'login_wx.html',
+									show:{
+								        autoShow:true,
+								        aniShow:'pop-in',
+								        duration:300	,			      
+								        extras:{}//窗口动画是否使用图片加速
+							    	},
+								    waiting:{
+								      autoShow:false//
+									}
+								})
+								$('.mengban').fadeOut()
+							}else if(rs.error_no==200){//已经绑定
+								plus.nativeUI.showWaiting()
+								user.clear()
+								var uid = rs.result.user.user_id;
+								user.deleteCache(uid); //清空缓存 
+								plus.storage.removeItem('shoushimima');
+								if (!uid) {
+									plus.nativeUI.alert('用户不存在'); 
+									return;
+								}
+								newUser.setInfo(rs.result)
+								mui.fire(plus.webview.getWebviewById('user.html'), 'mui.view.refresh');
+								mui.fire(plus.webview.getWebviewById('more.html'), 'mui.view.refresh');
+								var yzwv = plus.webview.getWebviewById('yz');
+								if(yzwv){
+									yzwv.close(); 
+								}
+								mui.fire(plus.webview.getLaunchWebview(), 'permission');
+								setTimeout(function(){
+									plus.webview.currentWebview().close();
+								},300);
+								return true;
+							} else {
+								plus.nativeUI.alert(rs.info || rs.msg || rs.message|| rs.error_msg);
+								return false;
 							}
-							//设置登陆信息,一年有效期
-							store.set('uid', uid, 3600 * 24 * 365);
-							store.set('utoken', rs.utoken, 3600 * 24 * 365);
-							store.set('username', username, 3600 * 24 * 365);
-							store.set('password', password, 3600 * 24 * 365);
-							
-//							plus.runtime.restart();
-
-							mui.fire(plus.webview.getWebviewById('user.html'), 'mui.view.refresh');
-							mui.fire(plus.webview.getWebviewById('more.html'), 'mui.view.refresh');
-							
-							var yzwv = plus.webview.getWebviewById('yz');
-							if(yzwv){
-								yzwv.close();
-							}
-							mui.fire(plus.webview.getLaunchWebview(), 'permission');
-//							//发送设备信息,并返回信息
-							setTimeout(function(){
-//								//system.sendDeviceInfo();
-//								//获取签到数
-//								//checkin.count();
-//								//切换页面
-								//mui.openWindow({url:'permission.html', id:'yz',styles:{popGesture:'none'},show:{autoShow:true,aniShow:'fade-in'},'waiting':{'autoShow':false}});
-								plus.webview.currentWebview().close();
-							},300);
-//							//更新页面
-//							var mainWV = plus.webview.currentWebview().opener();
-//							mui.fire(mainWV, 'mui.view.refresh');
-							return true;
-						} else {
-							plus.nativeUI.alert(rs.info || rs.msg || rs.message);
-							return false;
-						}
-					});
+						})
+					}, function(e){
+						//alert('用户信息：'+JSON.stringify(e))
+						console.log( "获取用户信息失败："+e.message+" - "+e.code );
+					} );
+				},function(e){
+					$('.mengban').fadeOut()
+					w&&w.close();w=null;  
 				});
+			}else{
+				plus.nativeUI.alert("无效的登录认证通道！",null,"登录");
+			}
+		})
+		function getSysInfo() {
+			var device = {
+				'model': plus.device.model,
+				'os': plus.os.name,
+				'os_version': plus.os.version,
+				'os_vendor': plus.os.vendor,
+				'os_language': plus.os.language,	
+			}
+			var types = {};
+		    types[plus.networkinfo.CONNECTION_UNKNOW] = "未知";
+		    types[plus.networkinfo.CONNECTION_NONE] = "未连接网络";
+		    types[plus.networkinfo.CONNECTION_ETHERNET] = "有线网络";
+		    types[plus.networkinfo.CONNECTION_WIFI] = "WiFi网络";
+		    types[plus.networkinfo.CONNECTION_CELL2G] = "2G蜂窝网络";
+		    types[plus.networkinfo.CONNECTION_CELL3G] = "3G蜂窝网络";
+		    types[plus.networkinfo.CONNECTION_CELL4G] = "4G蜂窝网络";
+		    device.network = types[plus.networkinfo.getCurrentType()]
+		    return device;
+		} 
 	})
-	
-//			 //首页返回键处理
-//			 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
-//			var first = null;
-//			mui.back = function() {
-//				//首次按键，提示‘再按一次退出应用’
-//				if (!first) {
-//					first = new Date().getTime();
-//					mui.toast('再按一次退出应用');
-//					setTimeout(function() {
-//						first = null;
-//					}, 1000);
-//				} else {
-//					if (new Date().getTime() - first < 1000) {
-//						plus.runtime.quit();
-//					}
-//				}
-//			};
-//      mui.back = function() {
-//      	return false;
-//      };
-//			mui.back = function() {
-//				var current = plus.webview.currentWebview();
-//				current.hide('auto');
-//				setTimeout(function() {
-//					current.close();
-//				}, 1000);
-//			}
-
 </script>
-</body>
+</body> 
 </html>

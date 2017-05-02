@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	    <title></title>
+	    <link rel="stylesheet" href="css/mui.min.css">
+	    <link href="css/css.css" rel="stylesheet" type="text/css" />
+	    <style>
+	    	body{
+	    		color:#333;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.topTitle{
+	    		height: 90px;
+	    	}
+	    	.dataList{
+	    		background-color:#f4f4f4;
+	    	}
+	    	.sjzl{
+	    		background: url(images/sjzlTop.png) no-repeat center; 
+	    		background-size: 75%;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.tzqs{
+	    		background: url(images/tzqsTop.png) no-repeat center; 
+	    		background-size: 75%;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.dyfb{
+	    		background: url(images/dyfbTop.png) no-repeat center; 
+	    		background-size: 75%;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.hzl{
+	    		background: url(images/hzlTop.png) no-repeat center; 
+	    		background-size: 75%;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.yql{
+	    		background: url(images/yqlTop.png) no-repeat center; 
+	    		background-size: 75%;
+	    		background-color:#f4f4f4;
+	    	}
+	    	.hzlImg{
+	    		display: block;
+	    		width: 190px;
+	    		height: auto;
+	    		margin: 0 auto;
+	    		
+	    	}
+	    	.dataBg{
+	    		/*padding: 0 8%;*/
+	    		width: 83%;
+	    		margin:0 auto;
+	    		background-color: #fff;
+	    	}
+	    	.dataReviewList{
+	    		padding:10px 8%;
+	    		position: relative;
+	    	}
+	    	.dataReviewList:after{
+	    		position: absolute;
+	    		content: "";
+	    		height: 1px;
+	    		width: 84%;
+	    		background-color:#F4F4F4;
+	    		bottom: 0;
+	    		left: 8%;
+	    		transform: scaleY(0.5);
+	    		-webkit-transform:scaleY(0.5);
+	    	}
+	    	.dataReviewList:last-child:after{
+	    		height: 0;
+	    	}
+	    	.dataReviewList p:first-child{
+	    		margin:5px 0px;
+	    		padding-left: 23px;
+	    		font-size: 16px;
+	    		line-height: 16px;
+	    		color: #333;
+	    		height: 16px;
+	    	}
+	    	.rlb_1{
+	    		background: url(images/tzicon.png) no-repeat 0px 0px;
+	    		background-size: 16px;
+	    	}
+	    	.rlb_2{
+	    		background: url(images/tzicon.png) no-repeat 0px -15px;
+	    		background-size: 16px;
+	    	}
+	    	.rlb_3{
+	    		background: url(images/tzicon.png) no-repeat 0px -33px;
+	    		background-size: 17px;
+	    	}
+	    	.rlb_4{
+	    		background: url(images/tzicon.png) no-repeat 0px -46px;
+	    		background-size: 16px;
+	    	}
+	    	.rlb_5{
+	    		background: url(images/tzicon.png) no-repeat 0px -65px;
+	    		background-size: 17px;
+	    	}
+	    	.rlb_6{
+	    		background: url(images/tzicon.png) no-repeat 0px -76px;
+	    		background-size: 16px;
+	    	}
+	    	.rlb_7{
+	    		background: url(images/tzicon.png) no-repeat 0px -97px;
+	    		background-size: 17px;
+	    	}
+	    	.rlb_8{
+	    		background: url(images/tzicon.png) no-repeat 0px -113px;
+	    		background-size: 17px;
+	    	}
+	    	.rlb_9{
+	    		background: url(images/tzicon.png) no-repeat 0px -151px; 
+	    		background-size: 20px;
+	    	}
+	    	.dataNumber{
+	    		color: #F95452;
+	    		font-size: 24px;
+	    	}
+	    	.dataNumber a{
+	    		font-size: 16px;
+	    		color: #F95452;
+	    	}
+	    	.chartContant{
+	    		background-color: #fff;
+	    		margin:0 auto;
+	    		width:83%;
+	    		height:300px;
+	    	}
+	    	#chart_one{
+	    		margin:0 auto;
+	    		width:105%;
+	    		height:300px
+	    	}
+	    	#chart_two{
+	    		width:100%;
+	    		height:300px
+	    	}
+	    	#hzlTime,#yqlTime{
+	    		position: absolute; 
+	    		left: 50%; 
+	    		top: 50%;  
+	    		-webkit-transform: translate(-50%, -50%);
+   				transform: translate(-50%, -50%); 
+   				margin-top: 30px;
+   				font-size: 9px;
+   				color: #cacaca;
+	    </style>
+	</head>
+	<body>
+		<div class="mui-content">
+			<div class="dataList">
+				<div class="topTitle sjzl"></div>
+				<div class="dataBg">
+					<ul id="dataListBox">
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_1">投资总额</p>
+							<p class="dataNumber"><span id="all_tou"></span>&nbsp;<a>元</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_2">赚取收益</p>
+							<p class="dataNumber"><span id="all_shouyi"></span>&nbsp;<a>元</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_3">注册用户</p>
+							<p class="dataNumber"><span id="userNumber"></span>&nbsp;<a>人</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_4">成交笔数</p>
+							<p class="dataNumber"><span id="borTenNumber"></span>&nbsp;<a>笔</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_5">项目总数</p>
+							<p class="dataNumber"><span id="borrowNumber"></span>&nbsp;<a>个</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_6">昨日成交</p>
+							<p class="dataNumber"><span id="borYesNum"></span>&nbsp;<a>元</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_7">贷款余额</p>
+							<p class="dataNumber"><span id="repaying_sum"></span>&nbsp;<a>元</a></p>
+						</li>
+						<li class='dataReviewList mui-table-view-cell'>
+							<p class="rlb_9">平均满标时间</p>
+							<p class="dataNumber"><span id="avg_time"></span>&nbsp;<a></a></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="dataList">
+				<div class="topTitle tzqs"></div>
+				<div class="chartContant">
+					<div id="chart_one">
+						
+					</div>
+				</div>
+					
+			</div>
+			<div class="dataList">
+				<div class="topTitle dyfb"></div>
+				<div class="chartContant" style="height:280px">
+					<div id="chart_two">
+						
+					</div>
+				</div>
+			</div>
+			<div class="dataList" style="">
+				<div class="topTitle hzl"></div>
+				<div class="dataBg" style="padding: 25px 0; position: relative;">
+					<img class="hzlImg" src="images/hzl.png" />
+					<span id="hzlTime"></span>
+				</div>
+			</div>
+			<div class="dataList" style="padding-bottom: 30px;">
+				<div class="topTitle yql"></div>
+				<div class="dataBg" style="padding: 25px 0; position: relative;">
+					<img class="hzlImg" src="images/yql-center.png" />
+					<span id="yqlTime"></span>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/common.js"></script>
+		<script src="js/api.js"></script>
+		<script type="text/javascript" src="js/echarts.min.js" ></script>
+		<!--<script type="text/javascript" src="js/dataPublic.js" ></script>-->
+		<script>
+			mui.init()
+			
+			mui.plusReady(function(){
+				//数据总览
+				function GetDateStr(AddDayCount) {
+				    var dd = new Date();
+				    dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+				    var y = dd.getFullYear();
+				    var m = dd.getMonth()+1;//获取当前月份的日期
+				    var d = dd.getDate();
+				    return "截止"+y+"年"+m+"月"+d+"日";
+				}
+				function timeGet(time){
+					if( parseInt(time/86400)!=0){
+						var day = parseInt(time/86400)+"天";
+						time = time%86400
+					}else{
+						var day = "";
+					}
+					
+					if( parseInt(time/3600)!=0 ){
+						var hour = parseInt(time/3600)+"小时";
+						time = time%3600
+					}else{
+						var hour = "";
+					}
+					
+					var min = parseInt(time/60)+"分钟"
+					time = time%60
+					var sec = parseInt(time)+"秒"
+					return day+hour+min+sec
+				}
+				document.getElementById("hzlTime").innerHTML = GetDateStr(-1)
+				document.getElementById("yqlTime").innerHTML = GetDateStr(-1) 
+				
+				var dataArray=[];
+				var monthArray=[];
+				var diyuArray=[]
+				var request={}
+				product.gettotal({'request':request},function(res){
+					console.log(JSON.stringify(res))
+					document.getElementById('all_tou').innerHTML=res.all_tou;
+					document.getElementById('all_shouyi').innerHTML=res.new_2015_shouyi;
+					document.getElementById('userNumber').innerHTML=res.all_users_num;
+					document.getElementById('borTenNumber').innerHTML=res.borrow_tender_num;
+					document.getElementById('borrowNumber').innerHTML=res.borrow_num;
+					document.getElementById('borYesNum').innerHTML=res.borrow_Yesterday_num;
+					document.getElementById('repaying_sum').innerHTML=res.repaying_sum;
+					var topArray = res.top10_rate
+					var avg_time = res.avg_time
+					var top10_rate = 0
+					for(var i = 0;i<topArray.length;i++){
+						top10_rate+=topArray[i]
+					}
+					//document.getElementById('top10_rate').innerHTML=top10_rate.toFixed(2);
+					document.getElementById('avg_time').innerHTML=timeGet(avg_time);
+					console.log(JSON.stringify(res));
+					var month_total=res.month_total;
+					diyuArray=res.arr_province
+					for(var j=0;j<6;j++){
+						//console.log(month_total[j].month);
+						monthArray.unshift(month_total[j].month+'月')
+						dataArray.unshift(month_total[j].num)
+						//console.log(month_total[j].num);
+					}
+					if(dataArray.length!=0){
+						//柱状图
+						var myChart_one = echarts.init(document.getElementById('chart_one'));
+						// 指定图表的配置项和数据
+						var option = {
+							color: ['#3A75D6'],
+							title: {
+								text: '近6个月投资走势图（万元）',
+								x:"center",
+								top:10,
+								textStyle:{
+									fontSize:'14',
+									fontWeight:'200'
+									
+								}
+							},
+							grid:{
+								top:70,
+								left:50
+							},
+							xAxis: {
+								data: monthArray,
+								axisLine:{
+									lineStyle:{
+										color:'#EFEFEF'
+									}
+									
+								},
+								axisLabel:{
+									textStyle:{
+										color:'#333'
+									}
+								},
+								axisTick:{
+									show:false,
+								},
+							},
+							yAxis: {
+								axisLine:{
+									lineStyle:{
+										width:0
+									}
+									
+								},
+								axisTick:{
+									show:false,
+								},
+								lineStyle:{
+										color:'#fff'
+									}
+							},
+							series: [{
+								name: '交易金额',
+								type: 'bar',
+								barWidth: '40%',
+								label: {
+					                normal: {
+					                    show: true,
+					                    position:'top',
+										textStyle:{
+											color:'#333',
+											fontSize:8
+										}
+					                },
+					            },
+								data: dataArray
+							}]
+						};
+						// 使用刚指定的配置项和数据显示图表。
+						myChart_one.setOption(option);
+					}else{
+						return false;
+					}
+					//console.log(JSON.stringify(month_total));
+					//console.log(monthArray);
+					//饼形图
+					var myChart_two = echarts.init(document.getElementById('chart_two'));
+					var option2 = {
+						color: ['#FF6600','#3A75D6','#1EC2D7','#F95452'],
+						tooltip : {
+							trigger: 'item',
+							formatter: "{a} <br/>{b} : {c} ({d}%)"
+						},
+						legend: {
+							//orient: 'vertical',
+							itemWidth:16,
+							itemHeight:16,
+							bottom: '40',
+							left: 'center',
+							itemGap:20,
+							data: [{name:'浙江',icon: 'circle'},
+							{name:'广东',icon: 'circle'},"",
+							{name:'上海',icon: 'circle'},
+							{name:'其他',icon: 'circle'}]
+						},
+						series : [
+							{	
+								name: '投资分布',
+								type: 'pie',
+								radius : '55%',
+								center: ['50%', '35%'],
+								label: {
+									normal: {
+										show: true,
+										formatter: '{d}%' ,
+										position:'top',
+										textStyle:{
+											fontSize:'12',
+											fontWeight:'bold'
+										},
+									},
+								},
+								labelLine: {
+									normal: {
+										show: true,
+										length: 0,
+										lineStyle:{
+											width:2
+										}
+									}
+								},
+								data:
+									diyuArray,
+								/*	{value:57.68, name:'浙江'},
+									{value:5.51, name:'广东'},
+									{value:4.06, name:'上海'},
+									{value:32.75, name:'其他'}*/
+								
+								itemStyle: {
+									normal: {
+										borderWidth:2,
+										borderColor:'#fff'
+									},
+									emphasis: {
+										borderWidth:0,
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+									
+								}
+							}
+						]
+					};
+					myChart_two.setOption(option2);
+				})
+			})
+			
+			
+			
+				
+				
+				
+			
+			/**方法**/
+			//隔3位显示数字
+			function changeNum(data){
+				data += '';
+				x = data.split('.');//[整数,小数]
+				x1 = x[0];//整数部分
+				x2 = x.length > 1 ? '.' + x[1] : '';//假如有小数，则在小数前加.，否者为空
+				var rgx = /(\d+)(\d{3})/;
+				while (rgx.test(x1)) {
+				x1 = x1.replace(rgx, '$1' + ',' + '$2');
+				}
+				return x1 + x2;
+			}
+		</script>
+	</body>
+</html>
